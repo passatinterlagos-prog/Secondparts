@@ -10,6 +10,8 @@ $("pics").addEventListener("change",function(e){
     };im.src=URL.createObjectURL(f);
   });
 });
+function oemReq(){var sh=document.querySelector('[name=stare]').value==="Second hand";document.querySelector('[name=oem]').required=!sh;$("oemstar").textContent=sh?"(opțional)":"*"}
+document.querySelector('[name=stare]').addEventListener("change",oemReq);
 async function login(e){
   e.preventDefault();var f=e.target;
   try{await apiLogin(f.email.value,f.pass.value);f.reset();refreshNav();await load();show("add");toast("Te-ai autentificat")}
@@ -27,7 +29,7 @@ async function save(e){
     await apiInsert(o);
     form.reset();photos=[];$("thumbs").innerHTML="";
     await load();show("list");toast("Anunț publicat");
-  }catch(err){toast(isAdmin()?"Nu s-a putut publica. Încearcă din nou.":"Sesiune expirată, intră din nou");if(!isAdmin()){refreshNav();show("login")}}
+  }catch(err){toast(isAdmin()?"Nu s-a putut publica ("+err.message+")":"Sesiune expirată, intră din nou");if(!isAdmin()){refreshNav();show("login")}}
   btn.disabled=false;btn.textContent="Publică anunțul";
 }
 function clean(x){var o=Object.assign({},x);delete o._id;delete o._d;return o}

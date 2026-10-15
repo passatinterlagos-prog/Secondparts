@@ -23,7 +23,7 @@ function renderMine(){
   if(!data.length){b.innerHTML='<div class="empty">Nu ai publicat niciun anunț.</div>';return}
   b.innerHTML=data.map(function(x){var id=esc(x._id);
     return '<div class="mr">'+(x.poze&&x.poze[0]?'<img loading="lazy" src="'+esc(x.poze[0])+'" alt="">':'<div class="np"></div>')
-    +'<div><b>'+esc(x.titlu)+'</b><div class="meta">'+esc(x.oem)+' · '+esc(x.pret)+' '+esc(x.moneda)+' · '+esc(x._d)+(x.vandut?' · <b>Vândut</b>':'')+'</div></div>'
+    +'<div><b>'+esc(x.titlu)+'</b><div class="meta">'+(x.oem?esc(x.oem)+' · ':'')+esc(x.pret)+' '+esc(x.moneda)+' · '+esc(x._d)+(x.vandut?' · <b>Vândut</b>':'')+'</div></div>'
     +'<div class="a"><button onclick="toggleSold(\''+id+'\')">'+(x.vandut?"Redeschide":"Vândut")+'</button><button onclick="del(\''+id+'\')">Șterge</button></div></div>';
   }).join("");
 }
@@ -60,7 +60,7 @@ function render(){
         wa="https://wa.me/"+tel.replace(/^0/,"40").replace("+","");
     return '<article class="item'+(x.vandut?" sold":"")+'"><div class="ph">'+(x.poze&&x.poze[0]?'<img loading="lazy" src="'+esc(x.poze[0])+'" alt="'+esc(x.titlu)+'">':"Fără poză")+'</div><div class="b">'
     +'<div>'+(x.vandut?'<span class="tag sold">Vândut</span>':'<span class="tag'+(x.stare==="Nouă"?" ok":"")+'">'+esc(x.stare)+'</span>')+'<span class="meta">'+esc(x.cat)+'</span></div>'
-    +'<h3>'+esc(x.titlu)+'</h3><span class="oem">'+esc(x.oem)+'</span>'
+    +'<h3>'+esc(x.titlu)+'</h3>'+(x.oem?'<span class="oem">'+esc(x.oem)+'</span>':"")
     +'<div class="meta">Compatibil: '+esc(x.marca)+" "+esc(x.model)+(ani?", "+esc(ani):"")+(x.motor?", "+esc(x.motor):"")+(x.comb?", "+esc(x.comb):"")+'</div>'
     +(x.desc?'<div class="meta">'+esc(x.desc)+'</div>':"")
     +'<div class="price">'+esc(x.pret)+" "+esc(x.moneda)+(x.negociabil?' <span class="meta">negociabil</span>':"")+'</div>'
