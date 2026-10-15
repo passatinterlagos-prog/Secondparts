@@ -4,7 +4,8 @@ SECONDPARTS - toate fisierele intr-un singur folder
   config.js      URL + cheia publishable Supabase
   api.js         comunicarea cu Supabase (date, login, poze)
   ui.js          lista, filtre, navigare
-  admin.js       login, publicare, vandut, stergere
+  admin.js       login, publicare, editare, vandut, stergere, comenzi
+  anunt.html/.js pagina unui anunt (galerie, comanda, similare)
   setup.sql      reguli de securitate + bucket poze (se ruleaza in Supabase)
 
 PASI IN SUPABASE

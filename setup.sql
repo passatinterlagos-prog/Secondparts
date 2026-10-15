@@ -16,3 +16,19 @@ drop policy if exists "poze stergere" on storage.objects;
 create policy "poze citire" on storage.objects for select using (bucket_id='poze');
 create policy "poze upload" on storage.objects for insert to authenticated with check (bucket_id='poze');
 create policy "poze stergere" on storage.objects for delete to authenticated using (bucket_id='poze');
+
+-- COMENZI: oricine poate trimite o comanda, doar tu le poti vedea
+create table if not exists comenzi (
+  id uuid primary key default gen_random_uuid(),
+  created_at timestamptz not null default now(),
+  data jsonb not null
+);
+alter table comenzi enable row level security;
+drop policy if exists "comanda publica" on comenzi;
+drop policy if exists "admin citeste comenzi" on comenzi;
+drop policy if exists "admin modifica comenzi" on comenzi;
+drop policy if exists "admin sterge comenzi" on comenzi;
+create policy "comanda publica" on comenzi for insert to anon, authenticated with check (true);
+create policy "admin citeste comenzi" on comenzi for select to authenticated using (true);
+create policy "admin modifica comenzi" on comenzi for update to authenticated using (true) with check (true);
+create policy "admin sterge comenzi" on comenzi for delete to authenticated using (true);

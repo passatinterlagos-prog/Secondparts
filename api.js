@@ -33,3 +33,8 @@ async function apiDeletePhoto(url){
   var k="/object/public/"+BUCKET+"/",i=String(url).indexOf(k);if(i<0)return;
   try{await fetch(SUPABASE_URL+"/storage/v1/object/"+BUCKET+"/"+url.slice(i+k.length),{method:"DELETE",headers:hdr(false)})}catch(e){}
 }
+
+async function apiOrders(){var r=await fetch(SUPABASE_URL+"/rest/v1/comenzi?select=id,created_at,data&order=created_at.desc&limit=200",{headers:hdr()});await chk(r);return r.json()}
+async function apiOrderInsert(o){await chk(await fetch(SUPABASE_URL+"/rest/v1/comenzi",{method:"POST",headers:Object.assign(hdr(),{Prefer:"return=minimal"}),body:JSON.stringify({data:o})}))}
+async function apiOrderPatch(id,o){await chk(await fetch(SUPABASE_URL+"/rest/v1/comenzi?id=eq."+encodeURIComponent(id),{method:"PATCH",headers:Object.assign(hdr(),{Prefer:"return=minimal"}),body:JSON.stringify({data:o})}))}
+async function apiOrderDel(id){await chk(await fetch(SUPABASE_URL+"/rest/v1/comenzi?id=eq."+encodeURIComponent(id),{method:"DELETE",headers:hdr()}))}

@@ -9,22 +9,22 @@ cats.forEach(function(c){var o=document.createElement("option");o.textContent=c;
 function go(){$("q").value=$("hq").value;go2()}
 function go2(){render();show("list");$("list").scrollIntoView()}
 function toggleMenu(){document.body.classList.toggle("mo")}
-var VIEWS=["list","add","login","mine","stats"];
+var VIEWS=["list","add","login","mine","stats","orders"];
 function show(w){
-  if((w==="add"||w==="mine"||w==="stats")&&!isAdmin())w="login";
+  if((w==="add"||w==="mine"||w==="stats"||w==="orders")&&!isAdmin())w="login";
   VIEWS.forEach(function(s){$(s).hidden=s!==w});
   $("home").hidden=w!=="list";
   document.body.classList.remove("mo");
   window.scrollTo(0,0);
 }
-function refreshNav(){["m-add","m-mine","m-stats","m-out"].forEach(function(i){$(i).hidden=!isAdmin()});$("m-login").hidden=isAdmin()}
+function refreshNav(){["m-add","m-mine","m-stats","m-orders","m-out"].forEach(function(i){$(i).hidden=!isAdmin()});$("m-login").hidden=isAdmin()}
 function renderMine(){
   var b=$("minebox");
   if(!data.length){b.innerHTML='<div class="empty">Nu ai publicat niciun anunț.</div>';return}
   b.innerHTML=data.map(function(x){var id=esc(x._id);
     return '<div class="mr">'+(x.poze&&x.poze[0]?'<img loading="lazy" src="'+esc(x.poze[0])+'" alt="">':'<div class="np"></div>')
-    +'<div><b>'+esc(x.titlu)+'</b><div class="meta">'+(x.oem?esc(x.oem)+' · ':'')+esc(x.pret)+' '+esc(x.moneda)+' · '+esc(x._d)+(x.vandut?' · <b>Vândut</b>':'')+'</div></div>'
-    +'<div class="a"><button onclick="toggleSold(\''+id+'\')">'+(x.vandut?"Redeschide":"Vândut")+'</button><button onclick="del(\''+id+'\')">Șterge</button></div></div>';
+    +'<div><a href="anunt.html?id='+id+'" target="_blank" rel="noopener"><b>'+esc(x.titlu)+'</b></a><div class="meta">'+(x.oem?esc(x.oem)+' · ':'')+esc(x.pret)+' '+esc(x.moneda)+' · '+esc(x._d)+(x.vandut?' · <b>Vândut</b>':'')+'</div></div>'
+    +'<div class="a"><button onclick="edit(\''+id+'\')">Editează</button><button onclick="toggleSold(\''+id+'\')">'+(x.vandut?"Redeschide":"Vândut")+'</button><button onclick="del(\''+id+'\')">Șterge</button></div></div>';
   }).join("");
 }
 function renderStats(){
@@ -44,7 +44,7 @@ async function load(){
   try{
     var rows=await apiList();
     data=rows.map(function(w){var o=w.data;o._id=w.id;o._d=new Date(w.created_at).toLocaleDateString("ro-RO");return o});
-    refreshNav();render();renderMine();renderStats();
+    refreshNav();render();renderMine();renderStats();if(isAdmin())loadOrders();
   }catch(e){box.innerHTML='<div class="empty">Nu s-au putut încărca anunțurile. Verifică js/config.js și politicile din Supabase.</div>'}
 }
 function render(){
@@ -58,16 +58,16 @@ function render(){
     var tel=String(x.tel).replace(/[^\d+]/g,""),
         ani=x.anDe||x.anPana?(x.anDe||"?")+" - "+(x.anPana||"?"):"",
         wa="https://wa.me/"+tel.replace(/^0/,"40").replace("+","");
-    return '<article class="item'+(x.vandut?" sold":"")+'"><div class="ph">'+(x.poze&&x.poze[0]?'<img loading="lazy" src="'+esc(x.poze[0])+'" alt="'+esc(x.titlu)+'">':"Fără poză")+'</div><div class="b">'
+    return '<article class="item'+(x.vandut?" sold":"")+'"><a class="ph" href="anunt.html?id='+esc(x._id)+'" target="_blank" rel="noopener">'+(x.poze&&x.poze[0]?'<img loading="lazy" src="'+esc(x.poze[0])+'" alt="'+esc(x.titlu)+'">':"Fără poză")+'</a><div class="b">'
     +'<div>'+(x.vandut?'<span class="tag sold">Vândut</span>':'<span class="tag'+(x.stare==="Nouă"?" ok":"")+'">'+esc(x.stare)+'</span>')+'<span class="meta">'+esc(x.cat)+'</span></div>'
-    +'<h3>'+esc(x.titlu)+'</h3>'+(x.oem?'<span class="oem">'+esc(x.oem)+'</span>':"")
+    +'<h3><a href="anunt.html?id='+esc(x._id)+'" target="_blank" rel="noopener">'+esc(x.titlu)+'</a></h3>'+(x.oem?'<span class="oem">'+esc(x.oem)+'</span>':"")
     +'<div class="meta">Compatibil: '+esc(x.marca)+" "+esc(x.model)+(ani?", "+esc(ani):"")+(x.motor?", "+esc(x.motor):"")+(x.comb?", "+esc(x.comb):"")+'</div>'
     +(x.desc?'<div class="meta">'+esc(x.desc)+'</div>':"")
     +'<div class="price">'+esc(x.pret)+" "+esc(x.moneda)+(x.negociabil?' <span class="meta">negociabil</span>':"")+'</div>'
     +'<div class="meta">'+esc(x.livrare)+" | "+esc(x.garantie)+(x.factura?" | Cu factură":"")+(x.cant>1?" | "+esc(x.cant)+" buc.":"")+'</div>'
     +'<div class="meta">'+esc(x.vanzator)+", "+esc(x.loc)+" | "+esc(x._d)+'</div>'
-    +'<div class="row"><a class="call" href="tel:'+esc(tel)+'">Sună</a><a href="'+esc(wa)+'" target="_blank" rel="noopener">WhatsApp</a></div>'
-    +(isAdmin()?'<div class="row adm"><button onclick="toggleSold(\''+esc(x._id)+'\')">'+(x.vandut?"Redeschide":"Marchează vândut")+'</button><button onclick="del(\''+esc(x._id)+'\')">Șterge</button></div>':"")
+    +'<div class="row"><a href="anunt.html?id='+esc(x._id)+'" target="_blank" rel="noopener">Detalii</a><a class="call" href="tel:'+esc(tel)+'">Sună</a><a href="'+esc(wa)+'" target="_blank" rel="noopener">WhatsApp</a></div>'
+    +(isAdmin()?'<div class="row adm"><button onclick="edit(\''+esc(x._id)+'\')">Editează</button><button onclick="toggleSold(\''+esc(x._id)+'\')">'+(x.vandut?"Redeschide":"Marchează vândut")+'</button><button onclick="del(\''+esc(x._id)+'\')">Șterge</button></div>':"")
     +'</div></article>';
   }).join("");
 }

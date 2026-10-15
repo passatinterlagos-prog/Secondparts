@@ -21,7 +21,8 @@
 <button onclick="show('list')">Piese</button>
 <button id="m-mine" onclick="show('mine')" hidden>Anunțurile mele</button>
 <button id="m-stats" onclick="show('stats')" hidden>Statistici</button>
-<button id="m-add" onclick="show('add')" hidden>Publică piesă</button>
+<button id="m-orders" onclick="show('orders')" hidden>Comenzi <span id="ordn"></span></button>
+<button id="m-add" onclick="newAd()" hidden>Publică piesă</button>
 <button id="m-login" onclick="show('login')">Admin</button>
 <button id="m-out" onclick="logout()" hidden>Ieșire</button>
 </aside>
@@ -49,7 +50,7 @@
 </section>
 
 <section id="mine" class="pad" hidden>
-<div class="sh"><h2>Anunțurile mele</h2><button class="btn" onclick="show('add')">+ Publică piesă</button></div>
+<div class="sh"><h2>Anunțurile mele</h2><button class="btn" onclick="newAd()">+ Publică piesă</button></div>
 <div id="minebox"></div>
 </section>
 <section id="stats" class="pad" hidden>
@@ -57,6 +58,10 @@
 <div id="statbox"></div>
 </section>
 
+<section id="orders" class="pad" hidden>
+<div class="sh"><h2>Comenzi primite</h2></div>
+<div id="ordbox"></div>
+</section>
 <section id="login" class="pad" hidden>
 <div class="sh"><h2>Autentificare admin</h2></div>
 <form onsubmit="login(event)"><fieldset><legend>Cont</legend><div class="grid">
@@ -66,7 +71,7 @@
 </section>
 
 <section id="add" class="pad" hidden>
-<div class="sh"><h2>Publică o piesă</h2></div>
+<div class="sh"><h2 id="addtitle">Publică o piesă</h2></div>
 <form id="f" onsubmit="save(event)">
   <fieldset><legend>Piesa</legend><div class="grid">
     <label class="wide">Titlu anunț *<input name="titlu" required maxlength="90" placeholder="Ex: Far stânga Golf 7 LED"></label>
@@ -105,7 +110,7 @@
     <label>Email<input name="email" type="email"></label>
     <label>Localitate / județ *<input name="loc" required placeholder="București"></label>
   </div></fieldset>
-  <button class="btn" type="submit">Publică anunțul</button>
+  <button class="btn" id="subbtn" type="submit">Publică anunțul</button>
 </form>
 </section>
 </main>
