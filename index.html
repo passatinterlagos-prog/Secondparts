@@ -12,8 +12,19 @@
 <body>
 <header><div class="w">
   <div class="logo">Second<b>Parts</b></div>
-  <nav><button id="t1" class="on" onclick="show('list')">Piese</button><button id="t2" class="cta" onclick="show('add')" hidden>Publică piesă</button><button id="t3" onclick="show('login')">Admin</button><button id="t4" onclick="logout()" hidden>Ieșire</button></nav>
+  <button class="bg" onclick="toggleMenu()" aria-label="Meniu"><i></i><i></i><i></i></button>
 </div></header>
+
+<div class="ov" onclick="toggleMenu()"></div>
+<aside class="dr" aria-label="Meniu">
+<button class="x" onclick="toggleMenu()">Închide ✕</button>
+<button onclick="show('list')">Piese</button>
+<button id="m-mine" onclick="show('mine')" hidden>Anunțurile mele</button>
+<button id="m-stats" onclick="show('stats')" hidden>Statistici</button>
+<button id="m-add" onclick="show('add')" hidden>Publică piesă</button>
+<button id="m-login" onclick="show('login')">Admin</button>
+<button id="m-out" onclick="logout()" hidden>Ieșire</button>
+</aside>
 
 <div id="home">
 <div class="hero"><div class="hg">
@@ -35,6 +46,15 @@
     <select id="fs" onchange="render()"><option value="">Orice stare</option><option>Nouă</option><option>Second hand</option><option>Recondiționată</option></select>
   </div></div>
   <div id="items" class="list"></div>
+</section>
+
+<section id="mine" class="pad" hidden>
+<div class="sh"><h2>Anunțurile mele</h2><button class="btn" onclick="show('add')">+ Publică piesă</button></div>
+<div id="minebox"></div>
+</section>
+<section id="stats" class="pad" hidden>
+<div class="sh"><h2>Statistici</h2></div>
+<div id="statbox"></div>
 </section>
 
 <section id="login" class="pad" hidden>
