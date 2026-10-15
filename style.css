@@ -63,3 +63,4 @@ footer{border-top:1px solid var(--line);padding:34px 0;color:var(--mute);font-si
 .item.sold{opacity:.55}.tag.sold{border-color:#c0392b;color:#e57368}
 .row button{flex:1;padding:10px;background:none;border:1px solid var(--line);color:var(--ink);font:600 .85rem Inter,sans-serif;letter-spacing:1px;text-transform:uppercase;cursor:pointer}
 .row button:hover{border-color:var(--gold)}.row.adm{margin-top:0;padding-top:0}
+.hero{padding:90px 0 70px}.hero h1{margin:0 0 28px}@media(max-width:640px){.hero{padding:56px 0 44px}}
