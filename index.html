@@ -3,78 +3,65 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Piese Auto - anunțuri</title>
-<style>
-:root{--bg:#e9ecef;--card:#fff;--ink:#1b1f23;--mute:#5d666f;--line:#c9cfd5;--acc:#d9480f;--acc2:#a83a0b;--ok:#2b8a3e}
-@media (prefers-color-scheme:dark){:root{--bg:#16191c;--card:#21262b;--ink:#eceff1;--mute:#9aa4ad;--line:#3a4148;--acc:#ff7a3d;--acc2:#ff9663;--ok:#51cf66}}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 "Segoe UI",Roboto,Arial,sans-serif}
-header{background:#1b1f23;color:#fff;padding:18px 16px;border-bottom:4px solid var(--acc)}
-header div{max-width:1100px;margin:auto;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
-h1{margin:0;font-size:1.5rem;letter-spacing:.3px}
-.tabs button{background:none;border:2px solid #fff;color:#fff;padding:8px 16px;border-radius:4px;font-weight:600;cursor:pointer;margin-left:6px}
-.tabs button.on{background:var(--acc);border-color:var(--acc)}
-main{max-width:1100px;margin:auto;padding:16px}
-section[hidden]{display:none}
-fieldset{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--acc);border-radius:4px;margin:0 0 16px;padding:14px 16px}
-legend{font-weight:700;padding:0 8px;font-size:1.05rem}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}
-label{display:block;font-size:.88rem;font-weight:600;color:var(--mute)}
-input,select,textarea{width:100%;margin-top:4px;padding:10px;border:1px solid var(--line);border-radius:4px;background:var(--bg);color:var(--ink);font:inherit}
-input:focus,select:focus,textarea:focus,button:focus-visible{outline:3px solid var(--acc);outline-offset:1px}
-textarea{min-height:110px;resize:vertical}
-.wide{grid-column:1/-1}
-.chk{display:flex;gap:8px;align-items:center;font-weight:400;color:var(--ink)}
-.chk input{width:auto;margin:0}
-.btn{background:var(--acc);color:#fff;border:0;border-radius:4px;padding:12px 22px;font-weight:700;font-size:1rem;cursor:pointer}
-.btn:hover{background:var(--acc2)}
-.btn.sec{background:none;color:var(--ink);border:2px solid var(--line)}
-#thumbs{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
-#thumbs img{width:90px;height:90px;object-fit:cover;border-radius:4px;border:1px solid var(--line)}
-.bar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
-.bar input,.bar select{margin:0;flex:1;min-width:150px}
-.list{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
-.item{background:var(--card);border:1px solid var(--line);border-radius:4px;overflow:hidden;display:flex;flex-direction:column}
-.item .ph{height:190px;background:var(--bg);display:flex;align-items:center;justify-content:center;color:var(--mute);font-size:.9rem}
-.item .ph img{width:100%;height:100%;object-fit:cover}
-.item .b{padding:14px;display:flex;flex-direction:column;gap:6px;flex:1}
-.item h3{margin:0;font-size:1.1rem}
-.oem{font-family:Consolas,monospace;background:var(--bg);border:1px dashed var(--mute);padding:2px 8px;border-radius:3px;display:inline-block;font-size:.88rem;width:fit-content}
-.price{font-size:1.4rem;font-weight:800;color:var(--acc)}
-.meta{font-size:.88rem;color:var(--mute)}
-.tag{display:inline-block;font-size:.78rem;font-weight:700;padding:2px 8px;border-radius:3px;background:var(--ink);color:var(--bg);margin-right:4px}
-.tag.ok{background:var(--ok);color:#fff}
-.row{display:flex;gap:8px;margin-top:auto;padding-top:8px;flex-wrap:wrap}
-.row a,.row button{flex:1;text-align:center;padding:9px;border-radius:4px;border:2px solid var(--line);background:none;color:var(--ink);font-weight:600;text-decoration:none;cursor:pointer;font-size:.9rem}
-.row a.call{background:var(--ok);border-color:var(--ok);color:#fff}
-.empty{text-align:center;padding:40px 16px;color:var(--mute)}
-#msg{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);background:var(--ok);color:#fff;padding:12px 20px;border-radius:4px;font-weight:600;display:none;z-index:9}
-.note{font-size:.85rem;color:var(--mute);margin-top:24px}
-</style>
+<title>SecondParts | Piese auto noi, second hand și dezmembrări</title>
+<meta name="description" content="Piese auto noi și second hand, direct de la dezmembrări. Caută după cod OEM, marcă și model.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header><div>
-  <h1>Piese Auto</h1>
-  <nav class="tabs">
-    <button id="t1" class="on" onclick="show('list')">Anunțuri</button>
-    <button id="t2" onclick="show('add')">Publică piesă</button>
-  </nav>
+<header><div class="w">
+  <div class="logo">Second<b>Parts</b></div>
+  <nav><button id="t1" class="on" onclick="show('list')">Piese</button><button id="t2" class="cta" onclick="show('add')" hidden>Publică piesă</button><button id="t3" onclick="show('login')">Admin</button><button id="t4" onclick="logout()" hidden>Ieșire</button></nav>
 </div></header>
 
-<main>
-<section id="add" hidden>
+<div id="home">
+<div class="hero"><div class="w">
+  <div class="eyebrow">Piese noi · Second hand · Dezmembrări</div>
+  <h1>Piesa potrivită, <em>direct din dezmembrare</em>.</h1>
+  <p>Găsește piese auto noi și second hand, verificate după cod OEM, pentru marca și modelul tău.</p>
+  <div class="hs"><input id="hq" type="search" placeholder="Cod OEM, marcă sau model (ex: Golf 7)" onkeydown="if(event.key==='Enter')go()"><button onclick="go()">Caută</button></div>
+  <div class="chips" id="chips"></div>
+</div></div>
+<div class="sv">
+  <div><div class="n">01</div><h3>Piese noi</h3><p>Piese noi, cu garanție și factură.</p></div>
+  <div><div class="n">02</div><h3>Second hand</h3><p>Testate, la prețuri mult mai mici.</p></div>
+  <div><div class="n">03</div><h3>Dezmembrări</h3><p>Piese demontate din mașini dezmembrate.</p></div>
+  <div><div class="n">04</div><h3>Livrare</h3><p>Curier în toată țara sau ridicare personală.</p></div>
+</div>
+</div>
+
+<main class="w">
+<section id="list" class="pad">
+  <div class="sh"><h2>Anunțuri</h2>
+  <div class="bar">
+    <input id="q" type="search" placeholder="Filtrează: titlu, OEM, marcă, model" oninput="render()" style="width:260px;margin:0">
+    <select id="fc" onchange="render()"><option value="">Toate categoriile</option></select>
+    <select id="fs" onchange="render()"><option value="">Orice stare</option><option>Nouă</option><option>Second hand</option><option>Recondiționată</option></select>
+  </div></div>
+  <div id="items" class="list"></div>
+</section>
+
+<section id="login" class="pad" hidden>
+<div class="sh"><h2>Autentificare admin</h2></div>
+<form onsubmit="login(event)"><fieldset><legend>Cont</legend><div class="grid">
+<label>Email<input name="email" type="email" required autocomplete="username"></label>
+<label>Parolă<input name="pass" type="password" required autocomplete="current-password"></label>
+</div></fieldset><button class="btn" type="submit">Intră</button></form>
+</section>
+
+<section id="add" class="pad" hidden>
+<div class="sh"><h2>Publică o piesă</h2></div>
 <form id="f" onsubmit="save(event)">
   <fieldset><legend>Piesa</legend><div class="grid">
     <label class="wide">Titlu anunț *<input name="titlu" required maxlength="90" placeholder="Ex: Far stânga Golf 7 LED"></label>
-    <label>Categorie *<select name="cat" required>
-      <option value="">Alege...</option><option>Motor</option><option>Cutie de viteze / transmisie</option><option>Frânare</option><option>Suspensie / direcție</option><option>Caroserie / faruri</option><option>Interior</option><option>Electrice / electronice</option><option>Evacuare</option><option>Răcire / climatizare</option><option>Roți / jante / anvelope</option><option>Filtre / consumabile</option><option>Alte piese</option></select></label>
+    <label>Categorie *<select name="cat" required><option value="">Alege...</option><option>Motor</option><option>Cutie de viteze / transmisie</option><option>Frânare</option><option>Suspensie / direcție</option><option>Caroserie / faruri</option><option>Interior</option><option>Electrice / electronice</option><option>Evacuare</option><option>Răcire / climatizare</option><option>Roți / jante / anvelope</option><option>Filtre / consumabile</option><option>Alte piese</option></select></label>
     <label>Marca piesei<input name="marcaPiesa" placeholder="Bosch, Valeo, OEM..."></label>
     <label>Cod piesă (OEM) *<input name="oem" required placeholder="Ex: 5G1941005"></label>
     <label>Cod de referință / alternativ<input name="ref"></label>
     <label>Stare *<select name="stare" required><option value="">Alege...</option><option>Nouă</option><option>Second hand</option><option>Recondiționată</option></select></label>
     <label>Cantitate<input name="cant" type="number" min="1" value="1"></label>
   </div></fieldset>
-
   <fieldset><legend>Compatibilitate</legend><div class="grid">
     <label>Marca auto *<input name="marca" required placeholder="Volkswagen"></label>
     <label>Model *<input name="model" required placeholder="Golf 7"></label>
@@ -84,7 +71,6 @@ textarea{min-height:110px;resize:vertical}
     <label>Combustibil<select name="comb"><option value="">-</option><option>Benzină</option><option>Diesel</option><option>GPL</option><option>Hibrid</option><option>Electric</option></select></label>
     <label class="wide">Serie șasiu (VIN), opțional<input name="vin" maxlength="17" placeholder="17 caractere"></label>
   </div></fieldset>
-
   <fieldset><legend>Preț și livrare</legend><div class="grid">
     <label>Preț *<input name="pret" type="number" min="0" step="0.01" required></label>
     <label>Monedă<select name="moneda"><option>RON</option><option>EUR</option></select></label>
@@ -93,130 +79,27 @@ textarea{min-height:110px;resize:vertical}
     <label class="chk"><input type="checkbox" name="negociabil"> Preț negociabil</label>
     <label class="chk"><input type="checkbox" name="factura"> Emit factură</label>
   </div></fieldset>
-
   <fieldset><legend>Descriere și poze</legend><div class="grid">
-    <label class="wide">Descriere<textarea name="desc" placeholder="Stare, defecte, motiv vânzare, ce include..."></textarea></label>
+    <label class="wide">Descriere<textarea name="desc" placeholder="Stare, defecte, mașina din care provine, ce include..."></textarea></label>
     <label class="wide">Poze (maxim 4)<input id="pics" type="file" accept="image/*" multiple></label>
     <div class="wide" id="thumbs"></div>
   </div></fieldset>
-
   <fieldset><legend>Contact</legend><div class="grid">
     <label>Nume / firmă *<input name="vanzator" required></label>
     <label>Telefon *<input name="tel" type="tel" required placeholder="07xx xxx xxx"></label>
     <label>Email<input name="email" type="email"></label>
     <label>Localitate / județ *<input name="loc" required placeholder="București"></label>
   </div></fieldset>
-
   <button class="btn" type="submit">Publică anunțul</button>
 </form>
 </section>
-
-<section id="list">
-  <div class="bar">
-    <input id="q" type="search" placeholder="Caută: titlu, cod OEM, marcă, model" oninput="render()">
-    <select id="fc" onchange="render()"><option value="">Toate categoriile</option></select>
-    <select id="fs" onchange="render()"><option value="">Orice stare</option><option>Nouă</option><option>Second hand</option><option>Recondiționată</option></select>
-  </div>
-  <div id="items" class="list"></div>
-  
-</section>
 </main>
+<footer><div class="w">© SecondParts · Piese auto noi, second hand și dezmembrări</div></footer>
 <div id="msg" role="status"></div>
 
-<script>
-/* ===== COMPLETEAZĂ CELE DOUĂ VALORI DIN SUPABASE ===== */
-var SUPABASE_URL="https://qkhgsymzvwcmcjrgkjzs.supabase.co";   // ex: https://abcdxyz.supabase.co
-var SUPABASE_KEY="sb_publishable_Og4WnPQVdnl-253FYt5YKg_dTZH2zSh";   // cheia "anon" / "publishable"
-/* ===================================================== */
-var data=[], photos=[];
-var H={"apikey":SUPABASE_KEY,"Content-Type":"application/json"};
-function ready(){return SUPABASE_URL&&SUPABASE_KEY}
-async function load(){
-  var box=document.getElementById("items");
-  if(!ready()){box.innerHTML='<div class="empty" style="grid-column:1/-1">Site-ul nu este conectat încă la baza de date. Completează SUPABASE_URL și SUPABASE_KEY la începutul scriptului din index.html.</div>';return}
-  box.innerHTML='<div class="empty" style="grid-column:1/-1">Se încarcă anunțurile...</div>';
-  try{
-    var r=await fetch(SUPABASE_URL+"/rest/v1/piese?select=id,created_at,data&order=created_at.desc&limit=200",{headers:H});
-    if(!r.ok)throw new Error(r.status);
-    var rows=await r.json();
-    data=rows.map(function(w){var o=w.data;o.id=w.id;o.data=new Date(w.created_at).toLocaleDateString("ro-RO");return o});
-    render();
-  }catch(e){box.innerHTML='<div class="empty" style="grid-column:1/-1">Nu s-au putut încărca anunțurile. Verifică URL-ul și cheia Supabase.</div>'}
-}
-var cats=["Motor","Cutie de viteze / transmisie","Frânare","Suspensie / direcție","Caroserie / faruri","Interior","Electrice / electronice","Evacuare","Răcire / climatizare","Roți / jante / anvelope","Filtre / consumabile","Alte piese"];
-cats.forEach(function(c){var o=document.createElement("option");o.textContent=c;document.getElementById("fc").appendChild(o)});
-
-function show(w){
-  document.getElementById("add").hidden=w!=="add";
-  document.getElementById("list").hidden=w!=="list";
-  document.getElementById("t1").className=w==="list"?"on":"";
-  document.getElementById("t2").className=w==="add"?"on":"";
-  window.scrollTo(0,0);
-}
-function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
-function toast(t){var m=document.getElementById("msg");m.textContent=t;m.style.display="block";setTimeout(function(){m.style.display="none"},2500)}
-
-document.getElementById("pics").addEventListener("change",function(e){
-  photos=[];var th=document.getElementById("thumbs");th.innerHTML="";
-  Array.prototype.slice.call(e.target.files,0,4).forEach(function(f){
-    var r=new FileReader();
-    r.onload=function(){
-      var im=new Image();
-      im.onload=function(){
-        var s=Math.min(1,800/Math.max(im.width,im.height)),c=document.createElement("canvas");
-        c.width=im.width*s;c.height=im.height*s;
-        c.getContext("2d").drawImage(im,0,0,c.width,c.height);
-        var u=c.toDataURL("image/jpeg",.7);photos.push(u);
-        var t=document.createElement("img");t.src=u;t.alt="Previzualizare";th.appendChild(t);
-      };im.src=r.result;
-    };r.readAsDataURL(f);
-  });
-});
-
-async function save(e){
-  e.preventDefault();
-  if(!ready()){toast("Conectează mai întâi Supabase");return}
-  var form=e.target,fd=new FormData(form),o={};
-  fd.forEach(function(v,k){o[k]=v});
-  o.negociabil=!!fd.get("negociabil");o.factura=!!fd.get("factura");
-  o.poze=photos;
-  var btn=form.querySelector("button[type=submit]");btn.disabled=true;btn.textContent="Se publică...";
-  try{
-    var r=await fetch(SUPABASE_URL+"/rest/v1/piese",{method:"POST",headers:Object.assign({"Prefer":"return=minimal"},H),body:JSON.stringify({data:o})});
-    if(!r.ok)throw new Error(r.status);
-    form.reset();photos=[];document.getElementById("thumbs").innerHTML="";
-    await load();show("list");toast("Anunț publicat");
-  }catch(err){toast("Nu s-a putut publica. Încearcă din nou.")}
-  btn.disabled=false;btn.textContent="Publică anunțul";
-}
-
-function render(){
-  var q=document.getElementById("q").value.toLowerCase(),
-      c=document.getElementById("fc").value,s=document.getElementById("fs").value,
-      box=document.getElementById("items");
-  var r=data.filter(function(x){
-    var txt=[x.titlu,x.oem,x.ref,x.marca,x.model,x.marcaPiesa,x.motor].join(" ").toLowerCase();
-    return (!q||txt.indexOf(q)>-1)&&(!c||x.cat===c)&&(!s||x.stare===s);
-  });
-  if(!r.length){box.innerHTML='<div class="empty" style="grid-column:1/-1">'+(data.length?"Niciun rezultat pentru filtrele alese.":"Nu ai niciun anunț încă. Apasă „Publică piesă” ca să adaugi primul.")+'</div>';return}
-  box.innerHTML=r.map(function(x){
-    var tel=String(x.tel).replace(/[^\d+]/g,""),
-        ani=x.anDe||x.anPana?(x.anDe||"?")+" - "+(x.anPana||"?"):"",
-        wa="https://wa.me/"+tel.replace(/^0/,"40").replace("+","");
-    return '<article class="item"><div class="ph">'+(x.poze&&x.poze[0]?'<img src="'+x.poze[0]+'" alt="'+esc(x.titlu)+'">':"Fără poză")+'</div><div class="b">'
-    +'<div><span class="tag'+(x.stare==="Nouă"?" ok":"")+'">'+esc(x.stare)+'</span><span class="meta">'+esc(x.cat)+'</span></div>'
-    +'<h3>'+esc(x.titlu)+'</h3><span class="oem">'+esc(x.oem)+'</span>'
-    +'<div class="meta">Compatibil: '+esc(x.marca)+" "+esc(x.model)+(ani?", "+esc(ani):"")+(x.motor?", "+esc(x.motor):"")+(x.comb?", "+esc(x.comb):"")+'</div>'
-    +(x.desc?'<div class="meta">'+esc(x.desc)+'</div>':"")
-    +'<div class="price">'+esc(x.pret)+" "+esc(x.moneda)+(x.negociabil?' <span class="meta">negociabil</span>':"")+'</div>'
-    +'<div class="meta">'+esc(x.livrare)+" | "+esc(x.garantie)+(x.factura?" | Cu factură":"")+(x.cant>1?" | "+esc(x.cant)+" buc.":"")+'</div>'
-    +'<div class="meta">'+esc(x.vanzator)+", "+esc(x.loc)+" | "+esc(x.data)+'</div>'
-    +'<div class="row"><a class="call" href="tel:'+esc(tel)+'">Sună</a><a href="'+esc(wa)+'" target="_blank" rel="noopener">WhatsApp</a></div>'
-    +'</div></article>';
-  }).join("");
-}
-
-load();
-</script>
+<script src="config.js"></script>
+<script src="api.js"></script>
+<script src="ui.js"></script>
+<script src="admin.js"></script>
 </body>
 </html>
