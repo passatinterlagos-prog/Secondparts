@@ -5,6 +5,7 @@ function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){retur
 function toast(t){var m=$("msg");m.textContent=t;m.style.display="block";setTimeout(function(){m.style.display="none"},2800)}
 var cats=["Motor","Cutie de viteze / transmisie","Frânare","Suspensie / direcție","Caroserie / faruri","Interior","Electrice / electronice","Evacuare","Răcire / climatizare","Roți / jante / anvelope","Filtre / consumabile","Alte piese"];
 cats.forEach(function(c){var o=document.createElement("option");o.textContent=c;$("fc").appendChild(o);});
+["Volkswagen","BMW","Audi","Mercedes","Renault","Dacia","Ford","Opel"].forEach(function(m){var b=document.createElement("button");b.textContent=m;b.onclick=function(){$("q").value=m;$("fc").value="";go2()};$("brands").appendChild(b)});
 function go(){$("q").value=$("hq").value;go2()}
 function go2(){render();show("list");$("list").scrollIntoView()}
 function show(w){
