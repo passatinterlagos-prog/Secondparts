@@ -1,11 +1,11 @@
 /* Comunicarea cu Supabase: baza de date, autentificare, poze */
-var TOKEN=null,REFRESH=null,refreshing=null;
-try{TOKEN=localStorage.getItem("sp_token");REFRESH=localStorage.getItem("sp_refresh")}catch(e){}
+var TOKEN=null,REFRESH=null,refreshing=null,REM=true;
+try{REM=localStorage.getItem("sp_rem")!=="0";var S0=REM?localStorage:sessionStorage;TOKEN=S0.getItem("sp_token");REFRESH=S0.getItem("sp_refresh")}catch(e){}
 function isAdmin(){return !!TOKEN}
 function hdr(json){var h={apikey:SUPABASE_KEY};if(TOKEN)h.Authorization="Bearer "+TOKEN;if(json!==false)h["Content-Type"]="application/json";return h}
 function setSession(j){
   TOKEN=j.access_token;REFRESH=j.refresh_token||REFRESH;
-  try{localStorage.setItem("sp_token",TOKEN);if(REFRESH)localStorage.setItem("sp_refresh",REFRESH)}catch(e){}
+  try{var S=REM?localStorage:sessionStorage;S.setItem("sp_token",TOKEN);if(REFRESH)S.setItem("sp_refresh",REFRESH)}catch(e){}
 }
 function expSoon(){
   try{var p=JSON.parse(atob(TOKEN.split(".")[1].replace(/-/g,"+").replace(/_/g,"/")));return p.exp*1000-Date.now()<30000}catch(e){return false}
@@ -39,12 +39,14 @@ async function chk(r){
   if(!r.ok){var t="";try{var j=await r.json();t=j.message||j.error||""}catch(e){}throw new Error(r.status+" "+t)}
   return r}
 function mini(){return Object.assign(hdr(),{Prefer:"return=minimal"})}
-async function apiLogin(email,pass){
+async function apiLogin(email,pass,rem){
   var r=await fetch(SUPABASE_URL+"/auth/v1/token?grant_type=password",{method:"POST",headers:{apikey:SUPABASE_KEY,"Content-Type":"application/json"},body:JSON.stringify({email:email,password:pass})});
   if(!r.ok)throw new Error(r.status);
+  REM=rem!==false;REFRESH=null;
+  try{localStorage.setItem("sp_rem",REM?"1":"0");["sp_token","sp_refresh"].forEach(function(k){localStorage.removeItem(k);sessionStorage.removeItem(k)})}catch(e){}
   setSession(await r.json());
 }
-function apiLogout(){TOKEN=null;REFRESH=null;try{localStorage.removeItem("sp_token");localStorage.removeItem("sp_refresh")}catch(e){}}
+function apiLogout(){TOKEN=null;REFRESH=null;try{["sp_token","sp_refresh"].forEach(function(k){localStorage.removeItem(k);sessionStorage.removeItem(k)})}catch(e){}}
 async function apiList(){
   var u=SUPABASE_URL+"/rest/v1/piese?select=id,created_at,data&order=created_at.desc&limit=200";
   var r=await sb(u);

@@ -17,4 +17,4 @@ PASI IN SUPABASE
 Completeaza in config.js telefonul, numarul WhatsApp, adresa si programul.
 Pune toate fisierele (fara setup.sql si README) in acelasi loc cand publici site-ul.
 
-POZA PRINCIPALA: pune o poza proprie numita hero.jpg langa index.html si apare automat in prima pagina (in lipsa ei se vede discul auriu).
+Designul este alb, minimalist. Poza hero.jpg nu mai este folosita.

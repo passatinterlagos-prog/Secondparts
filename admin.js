@@ -27,7 +27,7 @@ function edit(id){
 }
 async function login(e){
   e.preventDefault();var f=e.target;
-  try{await apiLogin(f.email.value,f.pass.value);f.reset();refreshNav();await load();show("add");toast("Te-ai autentificat")}
+  try{await apiLogin(f.email.value,f.pass.value,f.rem.checked);f.reset();f.pass.type="password";refreshNav();await load();show("add");toast("Te-ai autentificat")}
   catch(err){toast("Email sau parolă greșite")}
 }
 function logout(){apiLogout();ords=[];refreshNav();render();document.querySelector(".bg").classList.remove("n");show("list");toast("Ai ieșit din cont")}
@@ -79,3 +79,6 @@ async function ordDone(id,v){
 }
 async function ordDel(id){if(!confirm("Ștergi comanda?"))return;try{await apiOrderDel(id);await loadOrders()}catch(e){toast("Nu s-a putut șterge")}}
 refreshNav();load();
+
+function togglePw(b){var i=b.parentNode.querySelector("input"),s=i.type==="password",t=s?"Ascunde parola":"Arată parola";
+  i.type=s?"text":"password";b.classList.toggle("on",s);b.setAttribute("data-tip",t);b.setAttribute("aria-label",t)}
