@@ -1,5 +1,13 @@
 -- Rulează în Supabase: SQL Editor -> New query -> Run
 -- Vizitatorii doar citesc; doar utilizatorul autentificat (tu) poate scrie.
+create table if not exists piese (
+  id uuid primary key default gen_random_uuid(),
+  created_at timestamptz not null default now(),
+  data jsonb not null
+);
+alter table piese enable row level security;
+drop policy if exists "citire publica" on piese;
+create policy "citire publica" on piese for select to anon, authenticated using (true);
 drop policy if exists "adaugare publica" on piese;
 drop policy if exists "admin adauga" on piese;
 drop policy if exists "admin modifica" on piese;

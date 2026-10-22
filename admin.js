@@ -11,8 +11,8 @@ $("pics").addEventListener("change",function(e){
   var files=Array.prototype.slice.call(e.target.files,0,Math.max(0,4-kept.length-photos.length));
   files.forEach(function(f){var im=new Image();im.onload=function(){
     var s=Math.min(1,1200/Math.max(im.width,im.height)),c=document.createElement("canvas");
-    c.width=im.width*s;c.height=im.height*s;c.getContext("2d").drawImage(im,0,0,c.width,c.height);
-    c.toBlob(function(b){photos.push(b);thumbs()},"image/jpeg",.8)};im.src=URL.createObjectURL(f)});
+    c.width=Math.round(im.width*s);c.height=Math.round(im.height*s);c.getContext("2d").drawImage(im,0,0,c.width,c.height);
+    c.toBlob(function(b){if(b&&kept.length+photos.length<4){photos.push(b);thumbs()}},"image/jpeg",.8)};im.onerror=function(){toast("Poza nu poate fi citită. Folosește JPG sau PNG.")};im.src=URL.createObjectURL(f)});
   e.target.value="";
 });
 function oemReq(){var sh=document.querySelector('[name=stare]').value==="Second hand";document.querySelector('[name=oem]').required=!sh;$("oemstar").textContent=sh?"(opțional)":"*"}

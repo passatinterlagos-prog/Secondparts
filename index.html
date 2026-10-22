@@ -31,22 +31,32 @@
 <div class="hero"><div class="hg">
   <div class="hl">
     <h1>Piese auto <em>noi și second hand</em></h1>
+    <p class="sub">Piese cu cod OEM, verificate. Trimite seria șasiului și îți confirmăm compatibilitatea.</p>
     <div class="hs"><input id="hq" type="search" placeholder="Caută după cod OEM, marcă sau model" onkeydown="if(event.key==='Enter')go()"><button onclick="go()">Caută</button></div>
     <div class="brands" id="brands"></div>
   </div>
   <div class="hr" aria-hidden="true"></div>
 </div></div>
+<div class="trust"><div class="w"><div><b>Compatibilitate</b><span>Verificăm după seria șasiului</span></div><div><b>Livrare</b><span>Curier în toată țara</span></div><div><b>Garanție</b><span>Menționată pe fiecare anunț</span></div><div><b>Contact rapid</b><span>WhatsApp sau telefon</span></div></div></div>
 </div>
 
 <main class="w">
 <section id="list" class="pad">
-  <div class="sh"><h2>Anunțuri</h2>
+  <div class="sh"><h2>Anunțuri <span id="cnt" class="meta"></span></h2>
   <div class="bar">
     <input id="q" type="search" placeholder="Filtrează: titlu, OEM, marcă, model" oninput="render()" style="width:260px;margin:0">
     <select id="fc" onchange="render()"><option value="">Toate categoriile</option></select>
+    <select id="so" onchange="render()"><option value="n">Cele mai noi</option><option value="pa">Preț crescător</option><option value="pd">Preț descrescător</option></select>
     <select id="fs" onchange="render()"><option value="">Orice stare</option><option>Nouă</option><option>Second hand</option><option>Recondiționată</option></select>
   </div></div>
   <div id="items" class="list"></div>
+  <div id="rev" class="revs" hidden></div>
+  <div class="faq"><h2>Întrebări frecvente</h2>
+    <details><summary>Cum comand o piesă?</summary><p>Deschizi anunțul și completezi formularul de comandă sau ne scrii pe WhatsApp. Te contactăm pentru confirmare, preț final și livrare.</p></details>
+    <details><summary>Cum știu că piesa se potrivește mașinii mele?</summary><p>Trimite-ne seria șasiului (VIN) și codul piesei vechi. Verificăm compatibilitatea înainte de livrare.</p></details>
+    <details><summary>Cum se face livrarea?</summary><p>Fiecare anunț arată dacă piesa se ridică personal sau se trimite prin curier. Detaliile se stabilesc la confirmarea comenzii.</p></details>
+    <details><summary>Ce garanție primesc?</summary><p>Garanția este menționată pe fiecare anunț. Dacă ai dubii, întreabă-ne înainte să comanzi.</p></details>
+  </div>
 </section>
 
 <section id="mine" class="pad" hidden>
@@ -114,10 +124,12 @@
 </form>
 </section>
 </main>
-<footer><div class="w">© SecondParts</div></footer>
+<footer><div class="w"><div id="fcont"></div>© SecondParts</div></footer>
+<a id="fwa" class="fwa" target="_blank" rel="noopener" hidden>WhatsApp</a>
 <div id="msg" role="status"></div>
 
 <script src="config.js"></script>
+<script src="gal.js"></script>
 <script src="api.js"></script>
 <script src="ui.js"></script>
 <script src="admin.js"></script>
