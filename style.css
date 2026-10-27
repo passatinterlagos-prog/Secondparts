@@ -265,3 +265,9 @@ fieldset[hidden]{display:none!important}
 .trust2 .w>div{padding:14px 16px;display:flex;flex-direction:column;border-left:1px solid var(--line)}.trust2 .w>div:first-child{border-left:0}
 .trust2 b{color:var(--gold2);font:700 .78rem Inter,sans-serif;letter-spacing:1.5px;text-transform:uppercase}.trust2 span{color:var(--mute);font-size:.86rem}
 @media(max-width:560px){.trust2 .w>div{border-left:0;border-top:1px solid var(--line)}.trust2 .w>div:first-child{border-top:0}}
+
+/* meniu: atingeri sigure pe telefon */
+.ov{cursor:pointer}
+button,.dr button,.bg{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.dr{overscroll-behavior:contain}
+body.mo{overflow:hidden}

@@ -83,4 +83,3 @@ refreshNav();load();
 function togglePw(b){var i=b.parentNode.querySelector("input"),s=i.type==="password",t=s?"Ascunde parola":"Arată parola";
   i.type=s?"text":"password";b.classList.toggle("on",s);b.setAttribute("data-tip",t);b.setAttribute("aria-label",t)}
 (function(){if(location.hash==="#cere")show("req")})();
-(function(){if(location.hash==="#cere")show("req")})();
