@@ -426,3 +426,29 @@ main.w.pad{padding-left:20px;padding-right:20px}
   .trust2 .w>div.open b::after{content:"−"}
   .trust2 .w>div{align-self:start}
 }
+
+
+/* ---- meniu mai usor ---- */
+.dr{padding:16px 16px 28px}
+.dr .mg{font:700 .72rem Inter,sans-serif;letter-spacing:2px;text-transform:uppercase;color:var(--mute);margin:20px 6px 6px}
+.dr button{min-height:56px;padding:14px 14px;font-size:1.05rem;border:0;border-radius:14px;margin-bottom:4px;width:100%}
+.dr button:hover{background:#faf5e6}
+.dr button.on{background:#faf5e6;color:var(--gold2);font-weight:700}
+.dr .x{min-height:0;width:auto;align-self:flex-end;padding:6px 4px 14px;margin:0;font-size:.85rem;background:none}
+.dr .x:hover{background:none}
+.dr .mp{text-align:center;font-weight:700;color:#2a1d05;border:1px solid #9a7220;background:linear-gradient(180deg,#f8e6ae 0%,#dcb862 48%,#b88a2c 100%);box-shadow:0 3px 0 #8a6414}
+.dr .mp:hover{background:linear-gradient(180deg,#f8e6ae 0%,#dcb862 48%,#b88a2c 100%);color:#2a1d05;filter:brightness(1.06)}
+
+/* ---- anunt: buton Contact jos ---- */
+.csh{display:none}
+@media(max-width:760px){
+ .sb .cbtn{flex:0 0 auto;min-width:150px;min-height:48px;padding:12px 26px;border-radius:999px;font:700 1rem Inter,"Segoe UI",Roboto,Arial,sans-serif;cursor:pointer;background:linear-gradient(180deg,#f8e6ae 0%,#dcb862 48%,#b88a2c 100%);border:1px solid #9a7220;color:#2a1d05;box-shadow:0 3px 0 #8a6414}
+ .csh:not([hidden]){display:block;position:fixed;inset:0;z-index:29}
+ .csb{position:absolute;inset:0;background:rgba(20,20,30,.4)}
+ .csp{position:absolute;left:12px;right:12px;bottom:calc(78px + env(safe-area-inset-bottom,0px));display:grid;gap:10px;padding:14px;background:#fff;border-radius:22px;box-shadow:0 18px 50px rgba(30,30,50,.3)}
+ .csp .c2{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-height:64px;padding:12px;border-radius:16px;text-decoration:none;font:700 1.15rem Inter,"Segoe UI",Roboto,Arial,sans-serif;color:var(--ink);background:linear-gradient(180deg,#fff,#f3eee0);border:1px solid #dccfaa;box-shadow:0 3px 0 #d6c9a2}
+ .csp .c2 span{font-weight:500;font-size:.95rem;color:var(--mute)}
+ .csp .wa{background:linear-gradient(180deg,#f8e6ae 0%,#dcb862 48%,#b88a2c 100%);border-color:#9a7220;color:#2a1d05;box-shadow:0 3px 0 #8a6414}
+ .csp .wa span{color:#2a1d05;opacity:.8}
+ .ct2 a{display:none!important}
+}

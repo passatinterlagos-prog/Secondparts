@@ -19,15 +19,18 @@
 <div class="ov" onclick="toggleMenu()"></div>
 <aside class="dr" aria-label="Meniu">
 <button class="x" onclick="toggleMenu()">Închide ✕</button>
-<button onclick="show('list')">Piese second hand</button>
-<button onclick="show('req')">Cere o piesă</button>
-<button id="m-mine" onclick="show('mine')" hidden>Anunțurile mele</button>
-<button id="m-stats" onclick="show('stats')" hidden>Statistici</button>
-<button id="m-orders" onclick="show('orders')" hidden>Comenzi <span id="ordn"></span></button>
-<button id="m-cat" onclick="show('catalog')" hidden>Mărci și modele</button>
-<button id="m-add" onclick="newAd()" hidden>Vinde o piesă</button>
-<button id="m-car" onclick="newDezm()" hidden>Mașină la dezmembrat</button>
-<button id="m-login" onclick="show('login')">Admin</button>
+<div class="mg">Navigare</div>
+<button data-v="list" onclick="show('list')">Piese second hand</button>
+<button data-v="req" onclick="show('req')">Cere o piesă</button>
+<button onclick="toggleMenu();document.querySelector('footer').scrollIntoView({behavior:'smooth'})">Contact și locație</button>
+<div class="mg" id="m-adm" hidden>Administrare</div>
+<button class="mp" id="m-add" onclick="newAd()" hidden>+ Vinde o piesă</button>
+<button class="mp" id="m-car" onclick="newDezm()" hidden>+ Adaugă la dezmembrat</button>
+<button id="m-mine" data-v="mine" onclick="show('mine')" hidden>Anunțurile mele</button>
+<button id="m-orders" data-v="orders" onclick="show('orders')" hidden>Comenzi <span id="ordn"></span></button>
+<button id="m-stats" data-v="stats" onclick="show('stats')" hidden>Statistici</button>
+<button id="m-cat" data-v="catalog" onclick="show('catalog')" hidden>Mărci și modele</button>
+<button id="m-login" data-v="login" onclick="show('login')">Admin</button>
 <button id="m-out" onclick="logout()" hidden>Ieșire</button>
 </aside>
 
@@ -153,6 +156,7 @@
 <form id="f" onsubmit="save(event)">
   <fieldset id="fs-part"><legend>Ce vinzi</legend><div class="grid">
     <label class="wide">Numele piesei *<input name="titlu" required maxlength="90" placeholder="Ex: Far stânga Golf 7"></label>
+    <label class="wide">Categoria piesei (din ce categorie face parte)<select name="cat"><option value="">Alege categoria (sau lasă automat)</option><option>Mașini la dezmembrat</option><option>Motor</option><option>Cutie de viteze / transmisie</option><option>Frânare</option><option>Suspensie / direcție</option><option>Caroserie / faruri</option><option>Interior</option><option>Electrice / electronice</option><option>Evacuare</option><option>Răcire / climatizare</option><option>Roți / jante / anvelope</option><option>Filtre / consumabile</option><option>Alte piese</option></select></label>
     <label class="wide">Descriere<textarea name="desc" placeholder="Stare, defecte, ce include..."></textarea></label>
     <label class="wide">Poze (maxim 4)<input id="pics" type="file" accept="image/*" multiple></label>
     <div class="wide" id="thumbs"></div>
@@ -160,6 +164,10 @@
   <fieldset id="fs-compat"><legend>Pentru ce mașină</legend><div class="grid">
     <label>Marca auto *<input name="marca" list="dl-marci" required placeholder="Volkswagen" autocomplete="off"></label>
     <label>Model *<input name="model" list="dl-modele" required placeholder="Golf 7" autocomplete="off"></label>
+    <label>An de la / fabricație<input name="anDe" type="number" min="1950" max="2035" placeholder="2012"></label>
+    <label>An până la<input name="anPana" type="number" min="1950" max="2035" placeholder="2020"></label>
+    <label>Motorizare / cod motor<input name="motor" placeholder="1.6 TDI CRKB"></label>
+    <label>Combustibil<select name="comb"><option value="">-</option><option>Benzină</option><option>Diesel</option><option>GPL</option><option>Hibrid</option><option>Electric</option></select></label>
   </div></fieldset>
   <fieldset id="fs-price"><legend>Preț</legend><div class="grid">
     <label>Preț *<input name="pret" type="number" min="0" step="0.01" required inputmode="decimal"></label>
@@ -168,15 +176,10 @@
   </div></fieldset>
   <details id="more" class="more"><summary>Mai multe detalii (opțional)</summary>
   <div class="grid">
-    <label>Categorie (se alege singură dacă o lași goală)<select name="cat"><option value="">Automat</option><option>Mașini la dezmembrat</option><option>Motor</option><option>Cutie de viteze / transmisie</option><option>Frânare</option><option>Suspensie / direcție</option><option>Caroserie / faruri</option><option>Interior</option><option>Electrice / electronice</option><option>Evacuare</option><option>Răcire / climatizare</option><option>Roți / jante / anvelope</option><option>Filtre / consumabile</option><option>Alte piese</option></select></label>
     <label>Cod piesă (OEM) <span id="oemstar">(opțional)</span><input name="oem" placeholder="Ex: 5G1941005"></label>
     <label>Marca piesei<input name="marcaPiesa" placeholder="Bosch, Valeo, OEM..."></label>
     <label>Cod de referință / alternativ<input name="ref"></label>
     <label>Cantitate<input name="cant" type="number" min="1" value="1"></label>
-    <label>An de la<input name="anDe" type="number" min="1950" max="2035" placeholder="2012"></label>
-    <label>An până la<input name="anPana" type="number" min="1950" max="2035" placeholder="2020"></label>
-    <label>Motorizare / cod motor<input name="motor" placeholder="1.6 TDI CRKB"></label>
-    <label>Combustibil<select name="comb"><option value="">-</option><option>Benzină</option><option>Diesel</option><option>GPL</option><option>Hibrid</option><option>Electric</option></select></label>
     <label class="wide">Serie șasiu (VIN)<input name="vin" maxlength="17" placeholder="17 caractere"></label>
     <label class="wide">Provine din mașina<input name="masinaTitlu" maxlength="80" placeholder="Ex: BMW 320d 2014 (apare pe anunț)"></label>
     <label>Garanție<select name="garantie"><option>Fără garanție</option><option>7 zile</option><option>30 de zile</option><option>6 luni</option><option>12 luni</option></select></label>

@@ -39,12 +39,14 @@ function draw(x){
     +(x.desc?'<div style="white-space:pre-wrap">'+esc(x.desc)+'</div>':"")
     +(x.masinaTitlu?'<div class="provb"><div><span class="meta">Provine din mașina</span><br><b>'+esc(x.masinaTitlu)+'</b></div></div>':"")
     +(x.vandut?'':'<div class="vinb"><b>Verifică dacă se potrivește mașinii tale</b><div class="vr"><input id="vin" maxlength="17" placeholder="Serie șasiu (VIN), 17 caractere" autocapitalize="characters" autocomplete="off"><button type="button" class="btn" onclick="vinCheck()">Verifică pe WhatsApp</button></div><span class="meta">Primești confirmarea compatibilității înainte de livrare.</span></div>')
-    +'<div class="ct"><a class="call" href="tel:'+esc(tel)+'">Sună</a><a class="wa" href="'+esc(wa)+'" target="_blank" rel="noopener">WhatsApp</a><button onclick="share()">Copiază link</button><button onclick="shareAd()">Distribuie</button>'+(isAdmin()?'<button onclick="copyText()">Text pentru Marketplace</button>':"")+'</div>'
+    +'<div class="ct'+(x.vandut?'':' ct2')+'"><a class="call" href="tel:'+esc(tel)+'">Sună</a><a class="wa" href="'+esc(wa)+'" target="_blank" rel="noopener">WhatsApp</a><button onclick="share()">Copiază link</button><button onclick="shareAd()">Distribuie</button>'+(isAdmin()?'<button onclick="copyText()">Text pentru Marketplace</button>':"")+'</div>'
     +'</div>'
     +(x.vandut?'':'<div class="pro"><div><b>✓</b>Îți confirmăm compatibilitatea pe baza seriei șasiului</div><div><b>✓</b>Livrare prin curier în toată țara</div><div><b>✓</b>Răspundem rapid pe WhatsApp și telefon</div></div>')
     +'</div></div>'+ord
-    +(x.vandut?'':'<div class="sb"><div class="price">'+pz(x)+'</div><a href="tel:'+esc(tel)+'">Sună</a><a class="wa" href="'+esc(wa)+'" target="_blank" rel="noopener">WhatsApp</a></div>');seo(x);
+    +(x.vandut?'':'<div class="sb"><div class="price">'+pz(x)+'</div><button type="button" class="cbtn" id="cbt" aria-expanded="false" aria-controls="csh" onclick="ctog()">Contact</button></div><div id="csh" class="csh" hidden><div class="csb" onclick="ctog()"></div><div class="csp"><a class="call c2" href="tel:'+esc(tel)+'">Sună<span>'+esc(x.tel||tel)+'</span></a><a class="wa c2" href="'+esc(wa)+'" target="_blank" rel="noopener">WhatsApp<span>Scrie-ne un mesaj</span></a></div></div>');seo(x);
 }
+function ctog(){var s=$("csh"),b=$("cbt");if(!s)return;var o=s.hidden;s.hidden=!o;b.setAttribute("aria-expanded",o);b.textContent=o?"Închide":"Contact"}
+document.addEventListener("keydown",function(e){var s=$("csh");if(e.key==="Escape"&&s&&!s.hidden)ctog()});
 function shareAd(){
   var u=location.href,t=cur.titlu+" - "+cur.pret+" "+cur.moneda;
   if(navigator.share){navigator.share({title:t,text:t,url:u}).catch(function(){});return}

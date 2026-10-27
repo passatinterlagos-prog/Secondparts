@@ -75,7 +75,7 @@ window.addEventListener("popstate",function(e){show((e.state&&e.state.v)||"list"
 try{if(!history.state)history.replaceState({v:"list",n:0},"")}catch(e){}
 
 /* masina la dezmembrat: acelasi formular, completat pentru o masina intreaga */
-var DZ_CHIPS=["Uși","Capotă","Aripi","Bară față","Bară spate","Faruri","Stopuri","Portbagaj","Motor","Cutie de viteze","Interior","Jante"];
+var DZ_CHIPS=["Uși","Capotă","Aripi","Bară față","Bară spate","Faruri","Stopuri","Portbagaj","Motor","Cutie de viteze","Interior","Scaune","Bord","Oglinzi","Jante"];
 var PG_ADD0=PG.add;
 function dzLbl(inp,t){var l=inp&&inp.closest?inp.closest("label"):null;if(l&&l.firstChild&&l.firstChild.nodeType===3)l.firstChild.nodeValue=t}
 function dzMode(on){
@@ -86,8 +86,13 @@ function dzMode(on){
   t.placeholder=on?"Ex: Dezmembrez VW Passat B8 2.0 TDI":"Ex: Far stânga Golf 7";
   if(on&&!t.value)t.value="Dezmembrez ";
   dzLbl(t,on?"Titlul anunțului *":"Numele piesei *");
-  d.placeholder=on?"Ex: Uși, capotă, aripi, faruri, bară față, motor, cutie, interior":"Stare, defecte, ce include...";
-  dzLbl(d,on?"Ce piese ai de la mașină":"Descriere");
+  d.placeholder=on?"Ex: Vând uși, capotă, aripi, faruri, bară față, motor, cutie, interior":"Stare, defecte, ce include...";
+  dzLbl(d,on?"Ce piese vinzi de la mașină (uși, capotă etc.)":"Descriere");
+  if(on&&!d.value)d.value="Vând ";else if(!on&&d.value==="Vând ")d.value="";
+  var cl=c.closest("label");if(cl)cl.hidden=on;
+  dzLbl(E["anDe"],on?"An fabricație":"An de la / fabricație");
+  var pl=E["anPana"]&&E["anPana"].closest("label");if(pl)pl.hidden=on;
+  var at=$("addtitle");if(at)at.textContent=on?"Adaugă la dezmembrat":"Vinde o piesă";
   dzLbl(p,on?"Preț (nu e obligatoriu)":"Preț *");
   var lg=function(id,txt){var e=document.querySelector("#"+id+" legend");if(e)e.textContent=txt};
   lg("fs-part",on?"Mașina":"Ce vinzi");lg("fs-compat",on?"Ce mașină dezmembrezi":"Pentru ce mașină");lg("fs-price",on?"Preț (nu e obligatoriu)":"Preț");
@@ -100,11 +105,11 @@ function dzMode(on){
       var b=e.target.closest?e.target.closest("button"):null;if(!b)return;
       var ta=f.elements["desc"],v=ta.value.replace(/[,\s]+$/,""),w=b.textContent;
       if(v.toLowerCase().indexOf(w.toLowerCase())>-1)return;
-      ta.value=v?v+", "+w.toLowerCase():w;
+      ta.value=v?(/^vând$/i.test(v)?v+" ":v+", ")+w.toLowerCase():w;
     });
   }
   box.hidden=!on;
-  PG.add=on?["Mașină la dezmembrat","Scrie ce mașină dezmembrezi și ce piese ai: uși, capotă, faruri, motor etc."]:PG_ADD0;
+  PG.add=on?["Adaugă la dezmembrat","Alege marca, modelul și anul (ex: VW Passat 2016), apoi scrie ce piese vinzi: uși, capotă, faruri, motor etc."]:PG_ADD0;
   if(!$("add").hidden)pageBanner("add");
 }
 (function(){
