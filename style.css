@@ -414,3 +414,15 @@ main.w.pad{padding-left:20px;padding-right:20px}
   .trust2 b{font-size:.66rem;letter-spacing:1px}
   .trust2 span{font-size:.74rem;line-height:1.3}
 }
+
+/* carduri garantie/retur: descrierea apare la atingere */
+.trust2 .w>div{cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none}
+.trust2 .w>div:active{transform:translateY(3px);box-shadow:0 1px 0 #fff inset,0 1px 0 #d6c9a2,0 4px 8px rgba(110,85,20,.12)}
+@media(max-width:640px){
+  .trust2 .w>div span{display:none}
+  .trust2 .w>div.open span{display:block;margin-top:4px}
+  .trust2 .w>div b{display:flex;justify-content:space-between;align-items:center;gap:6px}
+  .trust2 .w>div b::after{content:"+";font-size:1.05rem;line-height:1;color:var(--gold2);flex:none}
+  .trust2 .w>div.open b::after{content:"−"}
+  .trust2 .w>div{align-self:start}
+}

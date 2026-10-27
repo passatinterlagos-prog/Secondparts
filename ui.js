@@ -146,5 +146,5 @@ function newReq(){var f=$("rf");f.reset();f.hidden=false;$("rdone").hidden=true;
     $("rev").hidden=false;
   }
   var cb=$("cbar");
-  if(cb&&tel){HAVECB=true;cb.innerHTML='<a href="tel:'+esc(tel.replace(/[^\d+]/g,""))+'">Sună</a>'+(wa?'<a class="wa" href="https://wa.me/'+esc(wa.replace(/\D/g,""))+'?text='+encodeURIComponent("Bună! Caut o piesă auto.")+'" target="_blank" rel="noopener">WhatsApp</a>':"")+(dir?'<a href="'+esc(dir)+'" target="_blank" rel="noopener">Drum</a>':"");cb.hidden=false}
+  if(cb&&tel){HAVECB=true;cb.innerHTML='<a href="tel:'+esc(tel.replace(/[^\d+]/g,""))+'">Sună</a>'+(wa?'<a class="wa" href="https://wa.me/'+esc(wa.replace(/\D/g,""))+'?text='+encodeURIComponent("Bună! Caut o piesă auto.")+'" target="_blank" rel="noopener">WhatsApp</a>':"")+(dir?'<a href="'+esc(dir)+'" target="_blank" rel="noopener">Locație</a>':"");cb.hidden=false}
 })();

@@ -119,3 +119,12 @@ function dzMode(on){
       return r};
   }
 })();
+
+/* Garantie / Retur / Factura / VIN: la atingere se arata descrierea */
+(function(){
+  var L=document.querySelectorAll(".trust2 .w>div");
+  Array.prototype.forEach.call(L,function(d){d.setAttribute("role","button");d.setAttribute("tabindex","0");d.setAttribute("aria-expanded","false")});
+  function tg(d){var o=d.classList.toggle("open");d.setAttribute("aria-expanded",o)}
+  document.addEventListener("click",function(e){var d=e.target.closest?e.target.closest(".trust2 .w>div"):null;if(d)tg(d)});
+  document.addEventListener("keydown",function(e){if((e.key==="Enter"||e.key===" ")&&e.target.matches&&e.target.matches(".trust2 .w>div")){e.preventDefault();tg(e.target)}});
+})();
