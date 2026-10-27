@@ -426,3 +426,74 @@ main.w.pad{padding-left:20px;padding-right:20px}
   .trust2 .w>div.open b::after{content:"−"}
   .trust2 .w>div{align-self:start}
 }
+
+/* ---- tema piese auto: grafit + portocaliu, butoane plate ---- */
+:root{--bg:#f3f4f6;--bg2:#eceef1;--ink:#161a21;--mute:#5d6571;--line:#dde0e5;--gold:#f26b1d;--gold2:#c24e0c;--ok:#1d9b54;--red:#d4382c;--dk:#161a21;--wa:#16a34a}
+body{background:var(--bg)}
+h1,h2,h3,.price,.logo,legend,.st b,.pgt,.logo b{text-shadow:none}
+header{background:var(--dk);border-bottom:0;box-shadow:0 3px 0 var(--gold)}
+.logo{color:#fff}.logo small{color:#aab1bc}
+.logo b{background:none;-webkit-text-fill-color:var(--gold);color:var(--gold);filter:none;font-weight:700}
+.bg,.bg:hover,.bg:active{background:#232932;border-color:#3a4250;border-radius:8px;box-shadow:none;transform:none}
+.bg i{background:#fff}.bg:hover{border-color:var(--gold)}.bg:hover i{background:var(--gold)}
+.hero2{background:var(--dk);padding:38px 0 30px}
+.hero2 .pgb-h{background:none;border:0;border-radius:0;box-shadow:none;padding:0 0 20px;margin:0 auto}
+.hero2 .pgb-h.hasbk{padding-top:50px}
+.hero2 h1{color:#fff;font-weight:700;letter-spacing:-.8px}.hero2 .sub2{color:#b7bec9}
+.hero2 .hs{border:2px solid var(--gold);border-radius:10px;box-shadow:none;padding:4px 4px 4px 18px}
+.hero2 .hs .hsb{border-radius:8px;background:var(--gold);color:#fff;box-shadow:none}
+.hcta button{border-radius:10px}
+.hcta .pri{background:var(--gold);border-color:var(--gold);color:#fff;box-shadow:none}
+.hcta .sec,.hcta .sec[aria-expanded=true]{background:#232932;border-color:#3a4250;color:#fff;box-shadow:none}
+.hcta .sec[aria-expanded=true]{border-color:var(--gold)}
+.hero2 .bkb{background:#232932;border-color:#3a4250;color:#fff;box-shadow:none}
+#hgal h2{color:#fff}.gt{border-radius:10px;border-color:#2f3642}.gb.p{background:var(--gold);color:#fff}
+.trust2{background:#fff;box-shadow:none;border:0;border-bottom:1px solid var(--line);margin-top:0;padding:14px 0}
+.trust2 .w>div,.trust2 .w>div:active{background:var(--bg);border:1px solid var(--line)!important;border-radius:8px;box-shadow:none;transform:none}
+/* butoane secundare albe, principale portocalii */
+.row a,.row button,.ct a,.ct button,.mr .a button,.od .a button,.bkb{background:#fff;border:1px solid #c9ced6;border-radius:8px;color:var(--ink);box-shadow:none;text-shadow:none}
+:is(.row a,.row button,.ct a,.ct button,.mr .a button,.od .a button,.bkb):hover{border-color:var(--gold);color:var(--gold2);transform:none}
+:is(.row a,.row button,.ct a,.ct button,.mr .a button,.od .a button,.bkb):active{transform:none;box-shadow:none;background:var(--bg2)}
+.btn,.hs button,.tag.new{background:var(--gold);border:1px solid var(--gold);color:#fff;border-radius:8px;box-shadow:none;text-shadow:none}
+.btn:hover,.hs button:hover{filter:brightness(1.08);transform:none}.btn:active,.hs button:active{transform:translateY(1px);box-shadow:none}
+#f #subbtn,.pcard .btn,.vr .btn{border-radius:8px}.tag{border-radius:6px}
+.item{border-radius:10px;box-shadow:none;border:1px solid var(--line)}
+.item:hover{border-color:var(--gold);box-shadow:0 8px 22px rgba(22,26,33,.12);transform:none}
+fieldset{border-radius:12px;border-top:3px solid var(--gold);box-shadow:none}
+.pcard,.fpanel,.reqcta,.more,.od,.mr,.st div,blockquote,.pro,.provb,.vinb{border-radius:10px;box-shadow:none}
+.reqcta,.more,.vinb{background:#fff}
+input,select,textarea{background:#fff;border-color:#cfd4db;border-radius:8px}
+.bar2 select,.fbtn{border-radius:8px}
+.pgb{background:#fff;border:1px solid var(--line);border-left:4px solid var(--gold);border-radius:10px;box-shadow:none}
+.cb i{background:var(--gold)}.cc{background:rgba(22,26,33,.8);color:#fff}
+#tip,#msg{background:var(--dk);color:#fff;border:1px solid #3a4250}
+footer{background:var(--dk);color:#aab1bc}.fc,.fc a{color:#fff}
+.fwa{background:var(--wa);border:1px solid var(--wa);color:#fff;border-radius:40px;box-shadow:0 6px 18px rgba(0,0,0,.25)}
+.fwa:hover,.fwa:active{filter:brightness(1.07);transform:none;box-shadow:0 6px 18px rgba(0,0,0,.25)}
+
+/* contact: un singur buton -> telefon + WhatsApp */
+button.cxb{display:flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:10px 16px;background:var(--gold);border:1px solid var(--gold);border-radius:8px;color:#fff;font:700 .9rem Inter,"Segoe UI",Roboto,Arial,sans-serif;letter-spacing:0;text-transform:none;text-shadow:none;box-shadow:none;cursor:pointer}
+button.cxb:hover,button.cxb.on{background:#d95a0f;border-color:#d95a0f;color:#fff;transform:none}
+button.cxb:active{transform:none;box-shadow:none}
+.cxb::after{content:"";width:7px;height:7px;margin:-3px 0 0 2px;border:solid currentColor;border-width:0 2px 2px 0;transform:rotate(45deg);transition:transform .2s}
+.cxb.on::after{transform:rotate(-135deg);margin-top:3px}
+.cxp{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+body .cxp a{flex:1 1 130px;display:flex;align-items:center;justify-content:center;gap:8px;min-height:46px;padding:10px 12px;border-radius:8px;font:700 .95rem Inter,"Segoe UI",Roboto,Arial,sans-serif;letter-spacing:0;text-transform:none;text-decoration:none;text-shadow:none;box-shadow:none;transform:none;white-space:nowrap}
+body .cxp a.call{background:#fff;border:2px solid var(--dk);color:var(--dk)}
+body .cxp a.wa{background:var(--wa);border:2px solid var(--wa);color:#fff}
+body .cxp a.call:hover,body .cxp a.wa:hover{filter:brightness(1.06)}
+body .cxp a.call:active,body .cxp a.wa:active{box-shadow:none;transform:none}
+.cxw>.cxb{width:100%;min-height:54px;font-size:1.05rem}
+body:has(.sb) :is(.cbar,.fwa){display:none!important}
+@media(max-width:760px){
+ .cbar .cxp,.sb .cxp{position:absolute;left:0;right:0;bottom:100%;margin:0;padding:12px;background:#fff;border-top:1px solid var(--line);box-shadow:0 -10px 24px rgba(0,0,0,.14)}
+ .cbar .cxb{flex:1.5;min-height:48px}
+ .cbar a{border-radius:8px;border:1px solid #c9ced6;background:#fff;color:var(--ink);min-height:48px;display:flex;align-items:center;justify-content:center}
+ .sb{background:#fff;transform:translateY(110%);visibility:hidden;transition:transform .2s,visibility 0s .2s}
+ .sb.show{transform:none;visibility:visible;transition:transform .2s}
+ .sb .cxb{flex:none;min-height:46px;padding:0 22px}
+}
+@media(max-width:640px){
+ .hero2{padding:14px 0}.hero2 .pgb-h{padding-bottom:12px}.hero2 .pgb-h.hasbk{padding-top:46px}
+ .item .cxp{display:none!important}
+}

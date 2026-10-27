@@ -4,6 +4,19 @@ function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){retur
 var tt;function toast(t){var m=$("msg");m.textContent=t;m.style.display="block";clearTimeout(tt);tt=setTimeout(function(){m.style.display="none"},2800)}
 var CAR="Mașini la dezmembrat";
 function pz(x){var p=parseFloat(x.pret);return(!(p>0)&&x.cat===CAR)?"Mașină la dezmembrat":esc(x.pret)+" "+esc(x.moneda)}
+/* contact: un singur buton; la apasare se deschid telefonul si WhatsApp */
+function cxI(p){return '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+p+'</svg>'}
+var CX_PH=cxI('<path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.2a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/>'),
+    CX_WA=cxI('<path d="M21 11.5a8.4 8.4 0 0 1-12.6 7.3L3 20l1.3-4.9A8.4 8.4 0 1 1 21 11.5z"/>');
+function cxHTML(id,tel,wa,lab){
+  var d=String(tel||"").replace(/[^\d+]/g,"");
+  return{b:'<button type="button" class="cxb" data-cx aria-expanded="false" aria-controls="'+esc(id)+'">'+CX_PH+lab+'</button>',
+    p:'<div class="cxp" id="'+esc(id)+'" hidden>'+(d?'<a class="call" href="tel:'+esc(d)+'">'+CX_PH+esc(tel)+'</a>':"")+(wa?'<a class="wa" href="'+esc(wa)+'" target="_blank" rel="noopener">'+CX_WA+'WhatsApp</a>':"")+'</div>'};
+}
+function cxClose(){Array.prototype.forEach.call(document.querySelectorAll("[data-cx]"),function(b){var p=$(b.getAttribute("aria-controls"));if(p)p.hidden=true;b.setAttribute("aria-expanded","false");b.classList.remove("on")})}
+function cxToggle(b){var p=$(b.getAttribute("aria-controls")),o=!!p&&p.hidden;cxClose();if(p&&o){p.hidden=false;b.setAttribute("aria-expanded","true");b.classList.add("on")}}
+document.addEventListener("click",function(e){var t=e.target,b=t&&t.closest?t.closest("[data-cx]"):null;if(b){cxToggle(b);return}if(!t||!t.closest||!t.closest(".cxp"))cxClose()});
+document.addEventListener("keydown",function(e){if(e.key==="Escape")cxClose()});
 var ALL=[],cur=null,id=new URLSearchParams(location.search).get("id");
 function sp(k,v){return v?'<tr><td>'+k+'</td><td>'+esc(v)+'</td></tr>':''}
 function pick(i){var s=document.querySelector(".big .cs");if(s)s.scrollTo({left:i*s.clientWidth,behavior:"smooth"})}
@@ -20,6 +33,7 @@ async function init(){
 function draw(x){
   var ph=x.poze||[],tel=String(x.tel||"").replace(/[^\d+]/g,""),wa="https://wa.me/"+tel.replace(/^0/,"40").replace("+","")+"?text="+encodeURIComponent("Bună! Mă interesează: "+x.titlu+(x.oem?" ("+x.oem+")":"")+(parseFloat(x.pret)>0?" - "+x.pret+" "+x.moneda:"")+". "+new URL("anunt.html?id="+x._id,location.href).href),
       ani=x.anDe||x.anPana?(x.anDe||"?")+" - "+(x.anPana||"?"):"";
+  var cxm=cxHTML("cxp-main",x.tel,wa,"Contactează vânzătorul"),cxs=cxHTML("cxp-sb",x.tel,wa,"Contact");
   var gal=ph.length?carHTML(ph,x.titlu,true)
     +(ph.length>1?'<div class="th">'+ph.map(function(u,i){return '<img src="'+esc(u)+'" class="'+(i?"":"on")+'" onclick="pick('+i+')" alt="Poza '+(i+1)+'">'}).join("")+'</div>':"")
     :'<div class="ph" style="height:340px;border:1px solid var(--line)">Fără poză</div>';
@@ -39,12 +53,14 @@ function draw(x){
     +(x.desc?'<div style="white-space:pre-wrap">'+esc(x.desc)+'</div>':"")
     +(x.masinaTitlu?'<div class="provb"><div><span class="meta">Provine din mașina</span><br><b>'+esc(x.masinaTitlu)+'</b></div></div>':"")
     +(x.vandut?'':'<div class="vinb"><b>Verifică dacă se potrivește mașinii tale</b><div class="vr"><input id="vin" maxlength="17" placeholder="Serie șasiu (VIN), 17 caractere" autocapitalize="characters" autocomplete="off"><button type="button" class="btn" onclick="vinCheck()">Verifică pe WhatsApp</button></div><span class="meta">Primești confirmarea compatibilității înainte de livrare.</span></div>')
-    +'<div class="ct"><a class="call" href="tel:'+esc(tel)+'">Sună</a><a class="wa" href="'+esc(wa)+'" target="_blank" rel="noopener">WhatsApp</a><button onclick="share()">Copiază link</button><button onclick="shareAd()">Distribuie</button>'+(isAdmin()?'<button onclick="copyText()">Text pentru Marketplace</button>':"")+'</div>'
+    +'<div class="cxw">'+cxm.b+cxm.p+'</div><div class="ct"><button onclick="share()">Copiază link</button><button onclick="shareAd()">Distribuie</button>'+(isAdmin()?'<button onclick="copyText()">Text pentru Marketplace</button>':"")+'</div>'
     +'</div>'
     +(x.vandut?'':'<div class="pro"><div><b>✓</b>Îți confirmăm compatibilitatea pe baza seriei șasiului</div><div><b>✓</b>Livrare prin curier în toată țara</div><div><b>✓</b>Răspundem rapid pe WhatsApp și telefon</div></div>')
     +'</div></div>'+ord
-    +(x.vandut?'':'<div class="sb"><div class="price">'+pz(x)+'</div><a href="tel:'+esc(tel)+'">Sună</a><a class="wa" href="'+esc(wa)+'" target="_blank" rel="noopener">WhatsApp</a></div>');seo(x);
+    +(x.vandut?'':'<div class="sb"><div class="price">'+pz(x)+'</div>'+cxs.b+cxs.p+'</div>');seo(x);stick();
 }
+/* bara de jos apare doar cand butonul de contact din anunt nu se mai vede: nu se dubleaza */
+function stick(){var sb=document.querySelector(".sb"),m=document.querySelector(".cxw");if(!sb)return;if(!m||!window.IntersectionObserver){sb.classList.add("show");return}new IntersectionObserver(function(en){sb.classList.toggle("show",!en[0].isIntersecting)}).observe(m)}
 function shareAd(){
   var u=location.href,t=cur.titlu+" - "+cur.pret+" "+cur.moneda;
   if(navigator.share){navigator.share({title:t,text:t,url:u}).catch(function(){});return}
