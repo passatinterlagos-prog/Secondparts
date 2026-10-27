@@ -67,12 +67,17 @@ async function load(){
     refreshNav();render();renderHero();renderMine();renderStats();evStats();if(isAdmin())loadOrders();
   }catch(e){box.innerHTML='<div class="empty">Nu s-au putut încărca anunțurile. Verifică config.js și politicile din Supabase.</div>'}
 }
+/* text fara diacritice: "stânga" = "stanga", "șasiu" = "sasiu", merge si cu ş/ţ cu sedilă */
+function norm(s){return String(s==null?"":s).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/ß/g,"ss")}
+function cmp(s){return norm(s).replace(/[^a-z0-9]/g,"")}
 function render(){
-  var q=$("q").value.toLowerCase(),c=$("fc").value,s=$("fs").value,box=$("items"),fb=($("fb").value||"").toLowerCase(),fm=($("fm").value||"").toLowerCase();
+  var qn=norm($("q").value).trim(),toks=qn.split(/[\s,;]+/).filter(Boolean),qc=cmp(qn),c=$("fc").value,s=$("fs").value,box=$("items"),fb=norm($("fb").value),fm=norm($("fm").value);
   var r=parts().filter(function(x){
-    var txt=[x.titlu,x.oem,x.ref,x.marca,x.model,x.marcaPiesa,x.motor].join(" ").toLowerCase();
-    var mk=String(x.marca||"").toLowerCase(),md=String(x.model||"").toLowerCase();
-    return (!q||txt.indexOf(q)>-1)&&(!c||x.cat===c)&&(!s||x.stare===s)&&(!fb||mk===fb||(typeof catCanon==="function"&&catCanon(x.marca).toLowerCase()===fb))&&(!fm||(md&&(md.indexOf(fm)>-1||fm.indexOf(md)>-1)));
+    var txt=[x.titlu,x.oem,x.ref,x.marca,x.model,x.marcaPiesa,x.motor,x.cat,x.masinaTitlu].join(" "),
+        tn=norm(txt),tc=cmp(txt);
+    var mk=norm(x.marca),md=norm(x.model);
+    var okq=!toks.length||toks.every(function(t){return tn.indexOf(t)>-1})||(qc.length>2&&tc.indexOf(qc)>-1);
+    return okq&&(!c||x.cat===c)&&(!s||x.stare===s)&&(!fb||mk===fb||(typeof catCanon==="function"&&norm(catCanon(x.marca))===fb))&&(!fm||(md&&(md.indexOf(fm)>-1||fm.indexOf(md)>-1)));
   });
   var so=$("so").value;
   r.sort(function(a,b){if(!!a.vandut!==!!b.vandut)return a.vandut?1:-1;var pa=parseFloat(a.pret)||0,pb=parseFloat(b.pret)||0;if(so==="pa")return pa-pb;if(so==="pd")return pb-pa;return b._t-a._t});
@@ -83,14 +88,15 @@ function render(){
         ani=x.anDe||x.anPana?(x.anDe||"?")+" - "+(x.anPana||"?"):"",
         wa="https://wa.me/"+tel.replace(/^0/,"40").replace("+","")+"?text="+encodeURIComponent("Bună! Mă interesează: "+x.titlu+(x.oem?" ("+x.oem+")":"")+" - "+x.pret+" "+x.moneda+". "+new URL("anunt.html?id="+x._id,location.href).href);
     return '<article class="item'+(x.vandut?" sold":"")+'" data-id="'+esc(x._id)+'" data-t="'+esc(x.titlu)+'"><a class="ph" href="anunt.html?id='+esc(x._id)+'" target="_blank" rel="noopener">'+(x.poze&&x.poze[0]?carHTML(x.poze,x.titlu,false):"Fără poză")+'</a><div class="b">'
-    +'<div>'+(x.vandut?'<span class="tag sold">Vândut</span>':'<span class="tag'+""+'">'+esc(x.stare)+'</span>')+(!x.vandut&&Date.now()-x._t<6048e5?'<span class="tag new">Nou pe site</span>':"")+'<span class="meta">'+esc(x.cat)+'</span></div>'
+    +'<div class="tg">'+(x.vandut?'<span class="tag sold">Vândut</span>':'<span class="tag'+""+'">'+esc(x.stare)+'</span>')+(!x.vandut&&Date.now()-x._t<6048e5?'<span class="tag new">Nou pe site</span>':"")+'<span class="meta">'+esc(x.cat)+'</span></div>'
     +'<h3><a href="anunt.html?id='+esc(x._id)+'" target="_blank" rel="noopener">'+esc(x.titlu)+'</a></h3>'+(x.oem?'<span class="oem">'+esc(x.oem)+'</span>':"")
-    +'<div class="meta">Compatibil: '+esc(x.marca)+" "+esc(x.model)+(ani?", "+esc(ani):"")+(x.motor?", "+esc(x.motor):"")+(x.comb?", "+esc(x.comb):"")+'</div>'
-    +(x.masinaTitlu?'<div class="meta prov">Provine din: <b>'+esc(x.masinaTitlu)+'</b></div>':"")
-    +(x.desc?'<div class="meta">'+esc(x.desc)+'</div>':"")
+    +'<div class="meta cp">Compatibil: '+esc(x.marca)+" "+esc(x.model)+(ani?", "+esc(ani):"")+(x.motor?", "+esc(x.motor):"")+(x.comb?", "+esc(x.comb):"")+'</div>'
+    +(x.masinaTitlu?'<div class="meta prov cp">Provine din: <b>'+esc(x.masinaTitlu)+'</b></div>':"")
+    +(x.desc?'<div class="meta cp">'+esc(x.desc)+'</div>':"")
     +'<div class="price">'+esc(x.pret)+" "+esc(x.moneda)+(x.negociabil?' <span class="meta">negociabil</span>':"")+'</div>'
-    +'<div class="meta">'+esc(x.livrare)+" | "+esc(x.garantie)+(x.factura?" | Cu factură":"")+(x.cant>1?" | "+esc(x.cant)+" buc.":"")+'</div>'
-    +'<div class="meta">'+esc(x.vanzator)+", "+esc(x.loc)+" | "+esc(x._d)+'</div>'
+    +'<div class="meta cp">'+esc(x.livrare)+" | "+esc(x.garantie)+(x.factura?" | Cu factură":"")+(x.cant>1?" | "+esc(x.cant)+" buc.":"")+'</div>'
+    +'<div class="meta dsk">'+esc(x.vanzator)+", "+esc(x.loc)+" | "+esc(x._d)+'</div>'
+    +'<div class="meta mob"><span>'+esc(x.loc)+'</span><span>'+esc(x._d)+'</span></div>'
     +'<div class="row"><a href="anunt.html?id='+esc(x._id)+'" target="_blank" rel="noopener">Detalii</a><a class="call" href="tel:'+esc(tel)+'">Sună</a><a class="wa" href="'+esc(wa)+'" target="_blank" rel="noopener">WhatsApp</a></div>'
     +(isAdmin()?'<div class="row adm"><button onclick="edit(\''+esc(x._id)+'\')">Editează</button><button onclick="toggleSold(\''+esc(x._id)+'\')">'+(x.vandut?"Redeschide":"Marchează vândut")+'</button><button onclick="del(\''+esc(x._id)+'\')">Șterge</button></div>':"")
     +'</div></article>';
