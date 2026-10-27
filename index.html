@@ -31,8 +31,9 @@
 </aside>
 
 <div id="hero" class="hero2"><div class="w">
-  <h1>Piese second hand direct din dezmembrare</h1>
-  <p class="sub2">Caută după cod, marcă sau model. Nu găsești piesa? Îți facem ofertă.</p>
+  <div class="pgb pgb-h"><button type="button" class="bkb" id="hbk" onclick="goBack()" data-tip="Înapoi la pagina anterioară" hidden><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg> Înapoi</button>
+    <h1>Piese second hand direct din dezmembrare</h1>
+    <p class="sub2">Caută după cod, marcă sau model. Nu găsești piesa? Îți facem ofertă.</p></div>
   <div class="hs"><input id="hq" type="search" placeholder="Cod OEM, marcă sau model" aria-label="Caută piese" autocomplete="off" onkeydown="if(event.key==='Enter')go()"><button type="button" class="hsb" onclick="go()" aria-label="Caută"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></button></div>
   <div class="hcta">
     <button type="button" class="pri" onclick="show('req')">Cere ofertă</button>
@@ -57,6 +58,7 @@
 <div id="home"><div class="w tabs"><button id="t-list" class="on" onclick="show('list')">Piese second hand</button><button id="t-req" onclick="show('req')">Cere o piesă</button></div></div>
 
 <main class="w">
+<div id="pgb" class="pgb" hidden></div>
 <section id="list" class="pad">
   <div class="sh"><h2>Piese second hand <span id="cnt" class="meta"></span></h2>
   <div class="bar2">

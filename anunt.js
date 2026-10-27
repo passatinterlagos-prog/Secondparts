@@ -5,7 +5,7 @@ var tt;function toast(t){var m=$("msg");m.textContent=t;m.style.display="block";
 var ALL=[],cur=null,id=new URLSearchParams(location.search).get("id");
 function sp(k,v){return v?'<tr><td>'+k+'</td><td>'+esc(v)+'</td></tr>':''}
 function pick(i){var s=document.querySelector(".big .cs");if(s)s.scrollTo({left:i*s.clientWidth,behavior:"smooth"})}
-function share(){var u=location.href;if(navigator.clipboard)navigator.clipboard.writeText(u).then(function(){toast("Link copiat")});else prompt("Copiază linkul:",u)}
+function share(){var u=location.href;if(navigator.clipboard)navigator.clipboard.writeText(u).then(function(){toast("Link copiat")}).catch(function(){prompt("Copiază linkul:",u)});else prompt("Copiază linkul:",u)}
 async function init(){
   var box=$("ad");
   try{
@@ -52,7 +52,7 @@ function copyText(){
   var x=cur,t=x.titlu+"\nPreț: "+x.pret+" "+x.moneda+(x.negociabil?" (negociabil)":"")+"\nStare: Second hand\n"
    +(x.oem?"Cod piesă: "+x.oem+"\n":"")+"Compatibil: "+(x.marca||"")+" "+(x.model||"")+((x.anDe||x.anPana)?" ("+(x.anDe||"?")+" - "+(x.anPana||"?")+")":"")+(x.motor?", "+x.motor:"")+"\n"
    +(x.desc?"\n"+x.desc+"\n":"")+"\nLivrare: "+(x.livrare||"")+" | Garanție: "+(x.garantie||"")+"\nTelefon: "+(x.tel||"")+" | "+(x.loc||"")+"\n"+location.href;
-  if(navigator.clipboard)navigator.clipboard.writeText(t).then(function(){toast("Text copiat, lipește-l în Facebook / Marketplace")});else prompt("Copiază textul:",t);
+  if(navigator.clipboard)navigator.clipboard.writeText(t).then(function(){toast("Text copiat, lipește-l în Facebook / Marketplace")}).catch(function(){prompt("Copiază textul:",t)});else prompt("Copiază textul:",t);
 }
 function vinCheck(){
   var v=$("vin").value.toUpperCase().replace(/[^A-Z0-9]/g,"");

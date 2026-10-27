@@ -8,7 +8,7 @@ cats.forEach(function(c){var o=document.createElement("option");o.textContent=c;
 function toggleMenu(){document.body.classList.toggle("mo")}
 var VIEWS=["list","req","catalog","add","login","mine","stats","orders"];
 var HAVECB=false;
-function show(w){
+function show(w,pop){
   if(w==="login"&&isAdmin())w="list";
   if((w==="add"||w==="catalog"||w==="mine"||w==="stats"||w==="orders")&&!isAdmin())w="login";
   VIEWS.forEach(function(s){$(s).hidden=s!==w});
@@ -16,6 +16,7 @@ function show(w){
   $("home").hidden=!(w==="list"||w==="req");$("t-req").className=w==="req"?"on":"";$("t-list").className=w==="list"?"on":"";
   document.body.classList.remove("mo");
   var cb=$("cbar");if(cb&&HAVECB)cb.hidden=!(w==="list"||w==="req");
+  if(window.navTrack)navTrack(w,pop);
   window.scrollTo(0,0);
 }
 function refreshNav(){["m-add","m-cat","m-mine","m-stats","m-orders","m-out"].forEach(function(i){$(i).hidden=!isAdmin()});$("m-login").hidden=isAdmin()}
