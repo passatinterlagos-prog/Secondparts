@@ -73,3 +73,49 @@ function navTrack(w,pop){
 function goBack(){var s=history.state;if(s&&s.n>0)history.back();else show("list")}
 window.addEventListener("popstate",function(e){show((e.state&&e.state.v)||"list",true)});
 try{if(!history.state)history.replaceState({v:"list",n:0},"")}catch(e){}
+
+/* masina la dezmembrat: acelasi formular, completat pentru o masina intreaga */
+var DZ_CHIPS=["Uși","Capotă","Aripi","Bară față","Bară spate","Faruri","Stopuri","Portbagaj","Motor","Cutie de viteze","Interior","Jante"];
+var PG_ADD0=PG.add;
+function dzLbl(inp,t){var l=inp&&inp.closest?inp.closest("label"):null;if(l&&l.firstChild&&l.firstChild.nodeType===3)l.firstChild.nodeValue=t}
+function dzMode(on){
+  var f=$("f");if(!f)return;
+  var E=f.elements,c=E["cat"],t=E["titlu"],d=E["desc"],p=E["pret"];
+  if(on){c.value=CAR}else if(c.value===CAR){c.value=""}
+  p.required=!on;if(E["oem"])E["oem"].required=false;
+  t.placeholder=on?"Ex: Dezmembrez VW Passat B8 2.0 TDI":"Ex: Far stânga Golf 7";
+  if(on&&!t.value)t.value="Dezmembrez ";
+  dzLbl(t,on?"Titlul anunțului *":"Numele piesei *");
+  d.placeholder=on?"Ex: Uși, capotă, aripi, faruri, bară față, motor, cutie, interior":"Stare, defecte, ce include...";
+  dzLbl(d,on?"Ce piese ai de la mașină":"Descriere");
+  dzLbl(p,on?"Preț (nu e obligatoriu)":"Preț *");
+  var lg=function(id,txt){var e=document.querySelector("#"+id+" legend");if(e)e.textContent=txt};
+  lg("fs-part",on?"Mașina":"Ce vinzi");lg("fs-compat",on?"Ce mașină dezmembrezi":"Pentru ce mașină");lg("fs-price",on?"Preț (nu e obligatoriu)":"Preț");
+  var box=$("dzchips");
+  if(!box){
+    box=document.createElement("div");box.id="dzchips";box.className="wide dzc";
+    box.innerHTML=DZ_CHIPS.map(function(x){return '<button type="button">'+x+'</button>'}).join("");
+    d.closest("label").insertAdjacentElement("afterend",box);
+    box.addEventListener("click",function(e){
+      var b=e.target.closest?e.target.closest("button"):null;if(!b)return;
+      var ta=f.elements["desc"],v=ta.value.replace(/[,\s]+$/,""),w=b.textContent;
+      if(v.toLowerCase().indexOf(w.toLowerCase())>-1)return;
+      ta.value=v?v+", "+w.toLowerCase():w;
+    });
+  }
+  box.hidden=!on;
+  PG.add=on?["Mașină la dezmembrat","Scrie ce mașină dezmembrezi și ce piese ai: uși, capotă, faruri, motor etc."]:PG_ADD0;
+  if(!$("add").hidden)pageBanner("add");
+}
+(function(){
+  var n=window.newAd,e=window.edit;
+  if(typeof n==="function"){
+    window.newAd=function(){var r=n.apply(this,arguments);dzMode(false);return r};
+    window.newDezm=function(){var r=n.apply(this,arguments);dzMode(true);return r};
+  }else{window.newDezm=function(){show("add");dzMode(true)}}
+  if(typeof e==="function"){
+    window.edit=function(id){var r=e.apply(this,arguments);
+      Promise.resolve(r).then(function(){var x=data.filter(function(a){return a._id===id})[0];dzMode(!!(x&&x.cat===CAR))});
+      return r};
+  }
+})();

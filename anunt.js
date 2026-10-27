@@ -2,6 +2,8 @@
 function $(i){return document.getElementById(i)}
 function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
 var tt;function toast(t){var m=$("msg");m.textContent=t;m.style.display="block";clearTimeout(tt);tt=setTimeout(function(){m.style.display="none"},2800)}
+var CAR="Mașini la dezmembrat";
+function pz(x){var p=parseFloat(x.pret);return(!(p>0)&&x.cat===CAR)?"Mașină la dezmembrat":esc(x.pret)+" "+esc(x.moneda)}
 var ALL=[],cur=null,id=new URLSearchParams(location.search).get("id");
 function sp(k,v){return v?'<tr><td>'+k+'</td><td>'+esc(v)+'</td></tr>':''}
 function pick(i){var s=document.querySelector(".big .cs");if(s)s.scrollTo({left:i*s.clientWidth,behavior:"smooth"})}
@@ -16,7 +18,7 @@ async function init(){
   }catch(e){box.innerHTML='<div class="empty">Nu s-a putut încărca anunțul.</div>'}
 }
 function draw(x){
-  var ph=x.poze||[],tel=String(x.tel||"").replace(/[^\d+]/g,""),wa="https://wa.me/"+tel.replace(/^0/,"40").replace("+","")+"?text="+encodeURIComponent("Bună! Mă interesează: "+x.titlu+(x.oem?" ("+x.oem+")":"")+" - "+x.pret+" "+x.moneda+". "+new URL("anunt.html?id="+x._id,location.href).href),
+  var ph=x.poze||[],tel=String(x.tel||"").replace(/[^\d+]/g,""),wa="https://wa.me/"+tel.replace(/^0/,"40").replace("+","")+"?text="+encodeURIComponent("Bună! Mă interesează: "+x.titlu+(x.oem?" ("+x.oem+")":"")+(parseFloat(x.pret)>0?" - "+x.pret+" "+x.moneda:"")+". "+new URL("anunt.html?id="+x._id,location.href).href),
       ani=x.anDe||x.anPana?(x.anDe||"?")+" - "+(x.anPana||"?"):"";
   var gal=ph.length?carHTML(ph,x.titlu,true)
     +(ph.length>1?'<div class="th">'+ph.map(function(u,i){return '<img src="'+esc(u)+'" class="'+(i?"":"on")+'" onclick="pick('+i+')" alt="Poza '+(i+1)+'">'}).join("")+'</div>':"")
@@ -31,7 +33,7 @@ function draw(x){
   $("ad").innerHTML='<div class="dg"><div class="gal">'+gal+'</div><div class="inf">'
     +'<div><span class="tag'+""+'">'+esc(x.stare)+'</span><span class="meta">'+esc(x.cat)+'</span></div>'
     +'<h1>'+esc(x.titlu)+'</h1>'+(x.oem?'<span class="oem">'+esc(x.oem)+'</span>':"")
-    +'<div class="price">'+esc(x.pret)+" "+esc(x.moneda)+(x.negociabil?' <span class="meta">negociabil</span>':"")+'</div>'
+    +'<div class="price">'+pz(x)+(x.negociabil?' <span class="meta">negociabil</span>':"")+'</div>'
     +'<table class="sp">'+sp("Compatibil",x.marca+" "+x.model)+sp("Ani",ani)+sp("Motorizare",x.motor)+sp("Combustibil",x.comb)+sp("Marca piesei",x.marcaPiesa)+sp("Cod alternativ",x.ref)
     +sp("Cantitate",x.cant>1?x.cant+" buc.":"")+sp("Garanție",x.garantie)+sp("Livrare",x.livrare)+sp("Factură",x.factura?"Da":"")+sp("Vânzător",x.vanzator+", "+x.loc)+sp("Publicat",x._d)+'</table>'
     +(x.desc?'<div style="white-space:pre-wrap">'+esc(x.desc)+'</div>':"")
@@ -41,7 +43,7 @@ function draw(x){
     +'</div>'
     +(x.vandut?'':'<div class="pro"><div><b>✓</b>Îți confirmăm compatibilitatea pe baza seriei șasiului</div><div><b>✓</b>Livrare prin curier în toată țara</div><div><b>✓</b>Răspundem rapid pe WhatsApp și telefon</div></div>')
     +'</div></div>'+ord
-    +(x.vandut?'':'<div class="sb"><div class="price">'+esc(x.pret)+" "+esc(x.moneda)+'</div><a href="tel:'+esc(tel)+'">Sună</a><a class="wa" href="'+esc(wa)+'" target="_blank" rel="noopener">WhatsApp</a></div>');seo(x);
+    +(x.vandut?'':'<div class="sb"><div class="price">'+pz(x)+'</div><a href="tel:'+esc(tel)+'">Sună</a><a class="wa" href="'+esc(wa)+'" target="_blank" rel="noopener">WhatsApp</a></div>');seo(x);
 }
 function shareAd(){
   var u=location.href,t=cur.titlu+" - "+cur.pret+" "+cur.moneda;

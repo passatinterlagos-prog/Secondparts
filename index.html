@@ -26,6 +26,7 @@
 <button id="m-orders" onclick="show('orders')" hidden>Comenzi <span id="ordn"></span></button>
 <button id="m-cat" onclick="show('catalog')" hidden>Mărci și modele</button>
 <button id="m-add" onclick="newAd()" hidden>Vinde o piesă</button>
+<button id="m-car" onclick="newDezm()" hidden>Mașină la dezmembrat</button>
 <button id="m-login" onclick="show('login')">Admin</button>
 <button id="m-out" onclick="logout()" hidden>Ieșire</button>
 </aside>
@@ -167,7 +168,7 @@
   </div></fieldset>
   <details id="more" class="more"><summary>Mai multe detalii (opțional)</summary>
   <div class="grid">
-    <label>Categorie (se alege singură dacă o lași goală)<select name="cat"><option value="">Automat</option><option>Motor</option><option>Cutie de viteze / transmisie</option><option>Frânare</option><option>Suspensie / direcție</option><option>Caroserie / faruri</option><option>Interior</option><option>Electrice / electronice</option><option>Evacuare</option><option>Răcire / climatizare</option><option>Roți / jante / anvelope</option><option>Filtre / consumabile</option><option>Alte piese</option></select></label>
+    <label>Categorie (se alege singură dacă o lași goală)<select name="cat"><option value="">Automat</option><option>Mașini la dezmembrat</option><option>Motor</option><option>Cutie de viteze / transmisie</option><option>Frânare</option><option>Suspensie / direcție</option><option>Caroserie / faruri</option><option>Interior</option><option>Electrice / electronice</option><option>Evacuare</option><option>Răcire / climatizare</option><option>Roți / jante / anvelope</option><option>Filtre / consumabile</option><option>Alte piese</option></select></label>
     <label>Cod piesă (OEM) <span id="oemstar">(opțional)</span><input name="oem" placeholder="Ex: 5G1941005"></label>
     <label>Marca piesei<input name="marcaPiesa" placeholder="Bosch, Valeo, OEM..."></label>
     <label>Cod de referință / alternativ<input name="ref"></label>
