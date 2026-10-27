@@ -1,4 +1,4 @@
-SECONDPARTS - toate fisierele intr-un singur folder
+HIKAR (SC HICAR DEZMEMBRARI SRL) - toate fisierele intr-un singur folder
   index.html     pagina
   style.css      aspectul
   config.js      URL + cheia publishable Supabase
@@ -18,3 +18,8 @@ Completeaza in config.js telefonul, numarul WhatsApp, adresa si programul.
 Pune toate fisierele (fara setup.sql si README) in acelasi loc cand publici site-ul.
 
 Designul este alb, minimalist. Poza hero.jpg nu mai este folosita.
+
+NOU: ruleaza din nou setup.sql in Supabase (adauga tabelul "evenimente" pentru statistici de vizitatori).
+In config.js poti completa SITE_PROGRAM, SITE_GOOGLE (linkul recenziilor), SITE_RATING si SITE_NREV.
+
+catalog.js = lista interna de marci/modele/ani (se completeaza singura in formulare). Ce lipseste adaugi din Admin -> Marci si modele.

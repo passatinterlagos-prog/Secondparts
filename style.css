@@ -208,3 +208,60 @@ a:focus-visible,button:focus-visible,summary:focus-visible,.cn:focus-visible{out
 .cn{background:rgba(255,253,249,.92);color:var(--gold2);border-color:var(--gold);box-shadow:0 3px 8px rgba(0,0,0,.18)}
 .cc{background:rgba(28,26,22,.78);color:#f3dca0}
 footer{background:#1c1a16;border:0;color:#bfb293}.fc{color:#f3dca0;font-size:1.02rem}.fc a{color:#f3dca0}
+
+/* tab-uri prima pagina */
+.tabs{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;padding-top:26px;padding-bottom:4px}
+.tabs button{padding:13px 26px;border-radius:999px;border:1px solid #dccfaa;background:linear-gradient(180deg,#fff,#f3eee0);color:var(--ink);font:600 .95rem Inter,sans-serif;cursor:pointer;box-shadow:0 3px 0 #d6c9a2}
+.tabs button:hover{border-color:var(--gold)}
+.tabs button.on{background:linear-gradient(180deg,#f8e6ae 0%,#dcb862 48%,#b88a2c 100%);border-color:#9a7220;color:#2a1d05;box-shadow:0 3px 0 #8a6414}
+fieldset[hidden]{display:none!important}
+@media(max-width:560px){.tabs button{flex:1;padding:13px 12px}}
+
+/* cerere piesa, VIN, provenienta */
+.chip{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 18px;padding:10px 14px;border:1px solid var(--gold);border-radius:999px;background:var(--bg2);width:fit-content;max-width:100%}
+.chip button{border:0;background:none;color:var(--gold2);font:600 .85rem Inter,sans-serif;cursor:pointer;text-decoration:underline}
+.reqcta{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-top:34px;padding:20px 22px;border:1px solid var(--line);border-radius:18px;background:var(--bg2)}
+.reqcta .btn{padding:13px 24px;cursor:pointer}
+.prov b{color:var(--gold2)}
+.provb{display:flex;align-items:center;gap:12px;margin:14px 0;padding:10px 12px;border:1px solid var(--line);border-radius:14px;background:var(--bg2)}
+.provb img{width:64px;height:48px;object-fit:cover;border-radius:8px}.provb a{color:var(--gold2);text-decoration:none}
+.vinb{margin:16px 0;padding:14px;border:1px solid var(--gold);border-radius:14px;background:#fff}
+.vr{display:flex;gap:8px;margin:8px 0;flex-wrap:wrap}.vr input{flex:1;min-width:200px;margin:0;text-transform:uppercase}
+.vr .btn{padding:12px 18px;border-radius:999px;cursor:pointer;white-space:nowrap}
+
+/* recenzii, bara de contact pe telefon */
+.rating{margin:0 0 18px;font-size:1.05rem}.rating b{color:var(--gold2)}.rating a{color:var(--gold2)}
+.cbar{display:none}
+@media(max-width:760px){
+ .cbar:not([hidden]){display:flex;position:fixed;left:0;right:0;bottom:0;z-index:40;gap:8px;padding:10px 12px calc(10px + env(safe-area-inset-bottom,0px));background:#fff;border-top:1px solid var(--line);box-shadow:0 -8px 24px rgba(0,0,0,.08)}
+ .cbar a{flex:1;text-align:center;padding:13px 6px;border-radius:999px;border:1px solid #dccfaa;background:linear-gradient(180deg,#fff,#f3eee0);color:var(--ink);text-decoration:none;font:600 .92rem Inter,sans-serif}
+ .cbar a.wa{background:linear-gradient(180deg,#f8e6ae 0%,#dcb862 48%,#b88a2c 100%);border-color:#9a7220;color:#2a1d05}
+ .cbar:not([hidden])~.fwa{display:none}
+ body:has(.cbar:not([hidden])){padding-bottom:72px}
+}
+
+/* logo + prima pagina */
+.logo{display:flex;flex-direction:column;line-height:1.05}
+.logo small{font:600 .6rem Inter,sans-serif;letter-spacing:2.6px;text-transform:uppercase;color:var(--mute);margin-top:3px}
+.hero2{text-align:center;padding:38px 0 6px;background:radial-gradient(ellipse at 50% -20%,rgba(214,176,86,.22),transparent 65%)}
+.hero2 h1{font-size:clamp(1.8rem,4.4vw,3rem);line-height:1.1;margin:0 0 10px}
+.sub2{color:var(--mute);margin:0 auto 22px;max-width:560px}
+.hero2 .hs{max-width:680px;margin:0 auto}
+.hbt{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:16px 0 30px}
+.hbt button{padding:13px 26px;border-radius:999px;font:600 .95rem Inter,sans-serif;cursor:pointer}
+.hbt .alt{border:1px solid #dccfaa;background:linear-gradient(180deg,#fff,#f3eee0);color:var(--ink)}
+#hgal{text-align:left}#hgal h2{font-size:1.15rem;margin:0 0 12px}
+.gal2{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x proximity;padding:4px 0 16px;-webkit-overflow-scrolling:touch}
+.gt{position:relative;flex:0 0 230px;height:165px;border-radius:14px;overflow:hidden;border:1px solid var(--line);scroll-snap-align:start;background:var(--bg2);display:block}
+.gt img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s}.gt:hover img{transform:scale(1.05)}
+.gb{position:absolute;top:8px;left:8px;background:#2a1d05;color:#fff;font:700 .68rem Inter,sans-serif;letter-spacing:1px;text-transform:uppercase;padding:4px 9px;border-radius:999px}
+.gb.p{background:var(--gold);color:#2a1d05;letter-spacing:0;text-transform:none;font-size:.78rem}
+.gc{position:absolute;left:0;right:0;bottom:0;padding:26px 10px 9px;color:#fff;font:600 .85rem Inter,sans-serif;background:linear-gradient(transparent,rgba(0,0,0,.72));white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media(max-width:560px){.gt{flex-basis:70vw}}
+
+/* garantii */
+.trust2{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--bg2);margin-top:6px}
+.trust2 .w{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+.trust2 .w>div{padding:14px 16px;display:flex;flex-direction:column;border-left:1px solid var(--line)}.trust2 .w>div:first-child{border-left:0}
+.trust2 b{color:var(--gold2);font:700 .78rem Inter,sans-serif;letter-spacing:1.5px;text-transform:uppercase}.trust2 span{color:var(--mute);font-size:.86rem}
+@media(max-width:560px){.trust2 .w>div{border-left:0;border-top:1px solid var(--line)}.trust2 .w>div:first-child{border-top:0}}

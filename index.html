@@ -3,60 +3,107 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>SecondParts | Piese auto noi, second hand și dezmembrări</title>
-<meta name="description" content="Piese auto noi și second hand, direct de la dezmembrări. Caută după cod OEM, marcă și model.">
+<title>Hikar | Dezmembrări auto Oradea – piese auto second hand</title>
+<meta name="description" content="Hikar – dezmembrări auto în Oradea. Piese auto second hand, direct de la dezmembrare. Caută după cod OEM, marcă și model.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Ccircle cx=%2732%27 cy=%2732%27 r=%2730%27 fill=%27%23c9a24a%27/%3E%3Ctext x=%2732%27 y=%2745%27 font-size=%2738%27 font-family=%27Arial%27 font-weight=%27700%27 text-anchor=%27middle%27 fill=%27%232a1d05%27%3EH%3C/text%3E%3C/svg%3E">
 </head>
 <body>
 <header><div class="w">
-  <div class="logo">Second<b>Parts</b></div>
+  <div class="logo"><span>Hi<b>kar</b></span><small>dezmembrări auto</small></div>
   <button class="bg" onclick="toggleMenu()" aria-label="Meniu"><i></i><i></i><i></i></button>
 </div></header>
 
 <div class="ov" onclick="toggleMenu()"></div>
 <aside class="dr" aria-label="Meniu">
 <button class="x" onclick="toggleMenu()">Închide ✕</button>
-<button onclick="show('list')">Piese</button>
+<button onclick="show('list')">Piese second hand</button>
+<button onclick="show('req')">Cere o piesă</button>
 <button id="m-mine" onclick="show('mine')" hidden>Anunțurile mele</button>
 <button id="m-stats" onclick="show('stats')" hidden>Statistici</button>
 <button id="m-orders" onclick="show('orders')" hidden>Comenzi <span id="ordn"></span></button>
+<button id="m-cat" onclick="show('catalog')" hidden>Mărci și modele</button>
 <button id="m-add" onclick="newAd()" hidden>Publică piesă</button>
 <button id="m-login" onclick="show('login')">Admin</button>
 <button id="m-out" onclick="logout()" hidden>Ieșire</button>
 </aside>
 
-<div id="home">
-<div class="hero"><div class="hg">
-  <div class="hl">
-    <h1>Piese auto <em>noi și second hand</em></h1>
-    <p class="sub">Piese cu cod OEM, verificate. Trimite seria șasiului și îți confirmăm compatibilitatea.</p>
-    <div class="hs"><input id="hq" type="search" placeholder="Caută după cod OEM, marcă sau model" onkeydown="if(event.key==='Enter')go()"><button onclick="go()">Caută</button></div>
-    <div class="brands" id="brands"></div>
-  </div>
-  <div class="hr" aria-hidden="true"></div>
+<div id="hero" class="hero2"><div class="w">
+  <h1>Piese second hand direct din dezmembrare</h1>
+  <p class="sub2">Caută piesa după cod, marcă sau model. Nu o găsești? Cere ofertă și te sunăm.</p>
+  <div class="hs"><input id="hq" type="search" placeholder="Caută: cod OEM, marcă sau model" onkeydown="if(event.key==='Enter')go()"><button onclick="go()">Caută</button></div>
+  <div class="hbt"><button class="btn" onclick="show('req')">Cere ofertă</button><button class="alt" onclick="document.getElementById('list').scrollIntoView()">Vezi piesele</button></div>
+  <div id="hgal" hidden><h2>Piese noi pe site</h2><div id="hgs" class="gal2"></div></div>
 </div></div>
-<div class="trust"><div class="w"><div><b>Compatibilitate</b><span>Verificăm după seria șasiului</span></div><div><b>Livrare</b><span>Curier în toată țara</span></div><div><b>Garanție</b><span>Menționată pe fiecare anunț</span></div><div><b>Contact rapid</b><span>WhatsApp sau telefon</span></div></div></div>
-</div>
+<div class="trust2"><div class="w">
+  <div><b>Garanție</b><span>Pe piesele vândute, durata e scrisă pe anunț</span></div>
+  <div><b>Retur</b><span>Dacă piesa nu corespunde</span></div>
+  <div><b>Factură fiscală</b><span>Pentru persoane fizice și firme</span></div>
+  <div><b>Verificare VIN</b><span>Confirmăm compatibilitatea</span></div>
+</div></div>
+<div id="home"><div class="w tabs"><button id="t-list" class="on" onclick="show('list')">Piese second hand</button><button id="t-req" onclick="show('req')">Cere o piesă</button></div></div>
 
 <main class="w">
 <section id="list" class="pad">
-  <div class="sh"><h2>Anunțuri <span id="cnt" class="meta"></span></h2>
+  <div class="sh"><h2>Piese second hand <span id="cnt" class="meta"></span></h2>
   <div class="bar">
     <input id="q" type="search" placeholder="Filtrează: titlu, OEM, marcă, model" oninput="render()" style="width:260px;margin:0">
     <select id="fc" onchange="render()"><option value="">Toate categoriile</option></select>
     <select id="so" onchange="render()"><option value="n">Cele mai noi</option><option value="pa">Preț crescător</option><option value="pd">Preț descrescător</option></select>
-    <select id="fs" onchange="render()"><option value="">Orice stare</option><option>Nouă</option><option>Second hand</option><option>Recondiționată</option></select>
+    <select id="fs" hidden><option value="">Second hand</option></select>
   </div></div>
   <div id="items" class="list"></div>
+  <div class="reqcta"><span><b>Nu găsești piesa de care ai nevoie?</b> Scoatem piese din mașini dezmembrate în fiecare zi. Spune-ne ce cauți și te sunăm.</span><button class="btn" onclick="show('req')">Cere o piesă</button></div>
   <div id="rev" class="revs" hidden></div>
   <div class="faq"><h2>Întrebări frecvente</h2>
     <details><summary>Cum comand o piesă?</summary><p>Deschizi anunțul și completezi formularul de comandă sau ne scrii pe WhatsApp. Te contactăm pentru confirmare, preț final și livrare.</p></details>
     <details><summary>Cum știu că piesa se potrivește mașinii mele?</summary><p>Trimite-ne seria șasiului (VIN) și codul piesei vechi. Verificăm compatibilitatea înainte de livrare.</p></details>
     <details><summary>Cum se face livrarea?</summary><p>Fiecare anunț arată dacă piesa se ridică personal sau se trimite prin curier. Detaliile se stabilesc la confirmarea comenzii.</p></details>
+    <details><summary>Pot returna piesa dacă nu se potrivește?</summary><p>Da. Dacă piesa nu corespunde anunțului sau nu se potrivește deși compatibilitatea a fost confirmată de noi, o poți returna. Condițiile exacte ți le spunem la confirmarea comenzii.</p></details>
+    <details><summary>Emiteți factură?</summary><p>Da, emitem factură fiscală pentru persoane fizice și pentru firme. Spune-ne datele firmei când comanzi.</p></details>
     <details><summary>Ce garanție primesc?</summary><p>Garanția este menționată pe fiecare anunț. Dacă ai dubii, întreabă-ne înainte să comanzi.</p></details>
   </div>
+</section>
+
+<section id="req" class="pad" hidden>
+<div class="sh"><h2>Cere o piesă</h2></div>
+<p class="meta" style="margin:-10px 0 22px">Nu ai găsit piesa pe site? Completează formularul și te contactăm dacă o avem în stoc sau o scoatem dintr-o mașină.</p>
+<form id="rf" onsubmit="sendReq(event)">
+<fieldset><legend>Mașina ta</legend><div class="grid">
+<label>Marca *<input name="marca" list="dl-marci" required placeholder="Volkswagen" autocomplete="off"></label>
+<label>Model *<input name="model" list="dl-modele" required placeholder="Golf 7" autocomplete="off"></label>
+<label>An fabricație<input name="an" type="number" min="1950" max="2035" list="dl-ani" placeholder="2015"></label>
+<label>Motorizare<input name="motor" placeholder="1.6 TDI"></label>
+<label class="wide">Serie șasiu (VIN), recomandat<input name="vin" maxlength="17" placeholder="17 caractere, o găsești în talonul mașinii" autocapitalize="characters"></label>
+</div></fieldset>
+<fieldset><legend>Piesa căutată</legend><div class="grid">
+<label class="wide">Ce piesă cauți? *<textarea name="piesa" required placeholder="Ex: far stânga, cod piesă dacă îl ai, ce defect are cea veche..."></textarea></label>
+</div></fieldset>
+<fieldset><legend>Contact</legend><div class="grid">
+<label>Nume *<input name="nume" required></label>
+<label>Telefon *<input name="tel" type="tel" required placeholder="07xx xxx xxx"></label>
+<label class="wide">Email<input name="email" type="email"></label>
+<label class="chk wide"><input type="checkbox" required> Sunt de acord ca datele mele să fie folosite pentru a răspunde acestei cereri.</label>
+<input name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
+</div></fieldset>
+<button class="btn" id="rbtn" type="submit">Trimite cererea</button>
+</form>
+<div id="rdone" hidden></div>
+</section>
+
+<section id="catalog" class="pad" hidden>
+<div class="sh"><h2>Mărci și modele</h2></div>
+<p class="meta" style="margin:-10px 0 22px" id="catcount"></p>
+<form id="cf" onsubmit="addCat(event)"><fieldset><legend>Adaugă sau corectează un model</legend><div class="grid">
+<label>Marca *<input name="marca" list="dl-marci" required placeholder="Ex: Volkswagen" autocomplete="off"></label>
+<label>Model / generație *<input name="model" list="dl-modele" required placeholder="Ex: Golf 7" autocomplete="off"></label>
+<label>An de la *<input name="a" type="number" min="1950" max="2035" required placeholder="2012"></label>
+<label>An până la (gol = în producție)<input name="b" type="number" min="1950" max="2035" placeholder="2020"></label>
+</div></fieldset><button class="btn" type="submit">Salvează modelul</button></form>
+<h3 style="margin:28px 0 4px">Adăugate de tine</h3>
+<div id="catbox"></div>
 </section>
 
 <section id="mine" class="pad" hidden>
@@ -84,31 +131,32 @@
 <section id="add" class="pad" hidden>
 <div class="sh"><h2 id="addtitle">Publică o piesă</h2></div>
 <form id="f" onsubmit="save(event)">
-  <fieldset><legend>Piesa</legend><div class="grid">
+  <fieldset id="fs-part"><legend>Piesa</legend><div class="grid">
+    <label class="wide">Provine din mașina (opțional)<input name="masinaTitlu" maxlength="80" placeholder="Ex: BMW 320d 2014 - se vede pe site că piesa e scoasă dintr-o mașină reală"></label>
     <label class="wide">Titlu anunț *<input name="titlu" required maxlength="90" placeholder="Ex: Far stânga Golf 7 LED"></label>
     <label>Categorie *<select name="cat" required><option value="">Alege...</option><option>Motor</option><option>Cutie de viteze / transmisie</option><option>Frânare</option><option>Suspensie / direcție</option><option>Caroserie / faruri</option><option>Interior</option><option>Electrice / electronice</option><option>Evacuare</option><option>Răcire / climatizare</option><option>Roți / jante / anvelope</option><option>Filtre / consumabile</option><option>Alte piese</option></select></label>
     <label>Marca piesei<input name="marcaPiesa" placeholder="Bosch, Valeo, OEM..."></label>
     <label>Cod piesă (OEM) <span id="oemstar">*</span><input name="oem" required placeholder="Ex: 5G1941005"></label>
     <label>Cod de referință / alternativ<input name="ref"></label>
-    <label>Stare *<select name="stare" required><option value="">Alege...</option><option>Nouă</option><option>Second hand</option><option>Recondiționată</option></select></label>
+    <input type="hidden" name="stare" value="Second hand">
     <label>Cantitate<input name="cant" type="number" min="1" value="1"></label>
   </div></fieldset>
-  <fieldset><legend>Compatibilitate</legend><div class="grid">
-    <label>Marca auto *<input name="marca" required placeholder="Volkswagen"></label>
-    <label>Model *<input name="model" required placeholder="Golf 7"></label>
+  <fieldset id="fs-compat"><legend>Compatibilitate</legend><div class="grid">
+    <label>Marca auto *<input name="marca" list="dl-marci" required placeholder="Volkswagen" autocomplete="off"></label>
+    <label>Model *<input name="model" list="dl-modele" required placeholder="Golf 7" autocomplete="off"></label>
     <label>An de la<input name="anDe" type="number" min="1950" max="2035" placeholder="2012"></label>
     <label>An până la<input name="anPana" type="number" min="1950" max="2035" placeholder="2020"></label>
     <label>Motorizare / cod motor<input name="motor" placeholder="1.6 TDI CRKB"></label>
     <label>Combustibil<select name="comb"><option value="">-</option><option>Benzină</option><option>Diesel</option><option>GPL</option><option>Hibrid</option><option>Electric</option></select></label>
     <label class="wide">Serie șasiu (VIN), opțional<input name="vin" maxlength="17" placeholder="17 caractere"></label>
   </div></fieldset>
-  <fieldset><legend>Preț și livrare</legend><div class="grid">
+  <fieldset id="fs-price"><legend>Preț și livrare</legend><div class="grid">
     <label>Preț *<input name="pret" type="number" min="0" step="0.01" required></label>
     <label>Monedă<select name="moneda"><option>RON</option><option>EUR</option></select></label>
     <label>Garanție<select name="garantie"><option>Fără garanție</option><option>7 zile</option><option>30 de zile</option><option>6 luni</option><option>12 luni</option></select></label>
     <label>Livrare<select name="livrare"><option>Ridicare personală</option><option>Curier</option><option>Ridicare sau curier</option></select></label>
     <label class="chk"><input type="checkbox" name="negociabil"> Preț negociabil</label>
-    <label class="chk"><input type="checkbox" name="factura"> Emit factură</label>
+    <label class="chk"><input type="checkbox" name="factura" checked> Emit factură</label>
   </div></fieldset>
   <fieldset><legend>Descriere și poze</legend><div class="grid">
     <label class="wide">Descriere<textarea name="desc" placeholder="Stare, defecte, mașina din care provine, ce include..."></textarea></label>
@@ -116,23 +164,27 @@
     <div class="wide" id="thumbs"></div>
   </div></fieldset>
   <fieldset><legend>Contact</legend><div class="grid">
-    <label>Nume / firmă *<input name="vanzator" required></label>
-    <label>Telefon *<input name="tel" type="tel" required placeholder="07xx xxx xxx"></label>
+    <label>Nume / firmă *<input name="vanzator" required value="Hikar Dezmembrări"></label>
+    <label>Telefon *<input name="tel" type="tel" required value="0758 702 979" placeholder="07xx xxx xxx"></label>
     <label>Email<input name="email" type="email"></label>
-    <label>Localitate / județ *<input name="loc" required placeholder="București"></label>
+    <label>Localitate / județ *<input name="loc" required value="Oradea, Bihor" placeholder="Oradea, Bihor"></label>
   </div></fieldset>
   <button class="btn" id="subbtn" type="submit">Publică anunțul</button>
 </form>
 </section>
 </main>
-<footer><div class="w"><div id="fcont"></div>© SecondParts</div></footer>
+<footer><div class="w"><div id="fcont"></div>© <span id="fyear"></span> Hikar</div></footer>
+<datalist id="dl-marci"></datalist><datalist id="dl-modele"></datalist><datalist id="dl-ani"></datalist>
+<div id="cbar" class="cbar" hidden></div>
 <a id="fwa" class="fwa" target="_blank" rel="noopener" hidden>WhatsApp</a>
 <div id="msg" role="status"></div>
 
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"AutoPartsStore","name":"Hikar Dezmembrări","legalName":"SC HICAR DEZMEMBRĂRI SRL","vatID":"RO44831052","telephone":"+40758702979","address":{"@type":"PostalAddress","streetAddress":"Str. Czárán Gyula nr. 1","postalCode":"410240","addressLocality":"Oradea","addressRegion":"Bihor","addressCountry":"RO"}}</script>
 <script src="config.js"></script>
 <script src="gal.js"></script>
 <script src="api.js"></script>
 <script src="ui.js"></script>
+<script src="catalog.js"></script>
 <script src="admin.js"></script>
 </body>
 </html>

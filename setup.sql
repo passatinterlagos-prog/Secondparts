@@ -40,3 +40,17 @@ create policy "comanda publica" on comenzi for insert to anon, authenticated wit
 create policy "admin citeste comenzi" on comenzi for select to authenticated using (true);
 create policy "admin modifica comenzi" on comenzi for update to authenticated using (true) with check (true);
 create policy "admin sterge comenzi" on comenzi for delete to authenticated using (true);
+
+-- STATISTICI: vizitatorii trimit evenimente (vizualizare, apel, whatsapp), doar tu le poti citi
+create table if not exists evenimente (
+  id uuid primary key default gen_random_uuid(),
+  created_at timestamptz not null default now(),
+  data jsonb not null
+);
+alter table evenimente enable row level security;
+drop policy if exists "eveniment public" on evenimente;
+drop policy if exists "admin citeste evenimente" on evenimente;
+drop policy if exists "admin sterge evenimente" on evenimente;
+create policy "eveniment public" on evenimente for insert to anon, authenticated with check (true);
+create policy "admin citeste evenimente" on evenimente for select to authenticated using (true);
+create policy "admin sterge evenimente" on evenimente for delete to authenticated using (true);

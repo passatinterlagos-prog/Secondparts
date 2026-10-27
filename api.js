@@ -72,3 +72,23 @@ async function apiOrders(){var r=await sb(SUPABASE_URL+"/rest/v1/comenzi?select=
 async function apiOrderInsert(o){await chk(await sb(SUPABASE_URL+"/rest/v1/comenzi",{method:"POST",body:JSON.stringify({data:o})},mini))}
 async function apiOrderPatch(id,o){await chk(await sb(SUPABASE_URL+"/rest/v1/comenzi?id=eq."+encodeURIComponent(id),{method:"PATCH",body:JSON.stringify({data:o})},mini))}
 async function apiOrderDel(id){await chk(await sb(SUPABASE_URL+"/rest/v1/comenzi?id=eq."+encodeURIComponent(id),{method:"DELETE"}))}
+
+/* statistici: vizualizari, apeluri, whatsapp (silentios daca tabelul lipseste) */
+function track(t,id,titlu){
+  try{
+    if(isAdmin())return;
+    if(t==="vedere"){var k="v_"+id;if(sessionStorage.getItem(k))return;sessionStorage.setItem(k,"1")}
+    fetch(SUPABASE_URL+"/rest/v1/evenimente",{method:"POST",keepalive:true,headers:{apikey:SUPABASE_KEY,"Content-Type":"application/json",Prefer:"return=minimal"},body:JSON.stringify({data:{t:t,id:id||"",titlu:titlu||""}})}).catch(function(){});
+  }catch(e){}
+}
+document.addEventListener("click",function(e){
+  var a=e.target.closest&&e.target.closest("a[href]");if(!a)return;
+  var h=a.getAttribute("href")||"",t=h.indexOf("tel:")===0?"apel":(h.indexOf("wa.me")>-1?"whatsapp":"");if(!t)return;
+  var it=a.closest("[data-id]"),c=(typeof cur!=="undefined"&&cur)?cur:null;
+  track(t,it?it.getAttribute("data-id"):(c?c._id:""),it?it.getAttribute("data-t"):(c?c.titlu:""));
+},true);
+async function apiEvents(){
+  var d=new Date(Date.now()-30*864e5).toISOString();
+  var r=await sb(SUPABASE_URL+"/rest/v1/evenimente?select=created_at,data&created_at=gte."+encodeURIComponent(d)+"&order=created_at.desc&limit=5000");
+  await chk(r);return r.json();
+}

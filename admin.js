@@ -16,8 +16,8 @@ $("pics").addEventListener("change",function(e){
   e.target.value="";
 });
 function oemReq(){var sh=document.querySelector('[name=stare]').value==="Second hand";document.querySelector('[name=oem]').required=!sh;$("oemstar").textContent=sh?"(opțional)":"*"}
-document.querySelector('[name=stare]').addEventListener("change",oemReq);
-function resetForm(){editId="";kept=[];photos=[];$("f").reset();thumbs();oemReq();$("addtitle").textContent="Publică o piesă";$("subbtn").textContent="Publică anunțul"}
+document.querySelector('[name=stare]').addEventListener("change",oemReq);oemReq();
+function resetForm(){editId="";kept=[];photos=[];$("f").reset();thumbs();$("addtitle").textContent="Publică o piesă";$("subbtn").textContent="Publică anunțul";oemReq()}
 function newAd(){resetForm();show("add")}
 function find(id){return data.filter(function(d){return d._id===id})[0]}
 function edit(id){
@@ -45,7 +45,7 @@ async function save(e){
       await apiPatch(editId,o);
       (old.poze||[]).forEach(function(u){if(urls.indexOf(u)<0)apiDeletePhoto(u)});
     }else await apiInsert(o);
-    var was=editId;resetForm();await load();show("list");toast(was?"Modificări salvate":"Anunț publicat");
+    var was=editId;resetForm();await load();show("list");toast(was?"Modificări salvate":"Anunț publicat")
   }catch(err){toast(isAdmin()?"Nu s-a putut salva ("+err.message+")":"Sesiune expirată, intră din nou");if(!isAdmin()){refreshNav();show("login")}}
   btn.disabled=false;btn.textContent=editId?"Salvează modificările":"Publică anunțul";
 }
@@ -67,7 +67,7 @@ function renderOrders(){
   b.innerHTML=ords.map(function(w){
     var o=w.data,id=esc(w.id),done=o.status==="procesat",tel=String(o.tel||"").replace(/[^\d+]/g,"");
     return '<div class="od'+(done?"":" new")+'"><div class="oh"><b>'+esc(o.piesa)+'</b><span class="meta">'+new Date(w.created_at).toLocaleString("ro-RO")+(done?" · procesată":" · nouă")+'</span></div>'
-    +'<div class="meta">'+esc(o.cant)+' buc. · '+esc(o.pret)+' '+esc(o.moneda)+(o.oem?' · '+esc(o.oem):'')+' · <a href="anunt.html?id='+esc(o.piesaId)+'" target="_blank" rel="noopener">vezi anunțul</a></div>'
+    +(o.tip==="cerere"?'<div class="meta">Mașina: <b>'+esc(o.marca)+' '+esc(o.model)+'</b>'+(o.an?' · '+esc(o.an):'')+(o.motor?' · '+esc(o.motor):'')+(o.vin?' · VIN: <b>'+esc(o.vin)+'</b>':'')+'</div>':'<div class="meta">'+esc(o.cant)+' buc. · '+esc(o.pret)+' '+esc(o.moneda)+(o.oem?' · '+esc(o.oem):'')+' · <a href="anunt.html?id='+esc(o.piesaId)+'" target="_blank" rel="noopener">vezi anunțul</a></div>')
     +'<div><b>'+esc(o.nume)+'</b> · <a href="tel:'+esc(tel)+'">'+esc(o.tel)+'</a>'+(o.email?' · <a href="mailto:'+esc(o.email)+'">'+esc(o.email)+'</a>':'')+'</div>'
     +(o.adresa?'<div class="meta">Adresă: '+esc(o.adresa)+'</div>':'')+(o.mesaj?'<div class="msgb">'+esc(o.mesaj)+'</div>':'')
     +'<div class="a"><button onclick="ordDone(\''+id+'\','+(done?0:1)+')">'+(done?"Redeschide":"Marchează procesată")+'</button><button onclick="ordDel(\''+id+'\')">Șterge</button></div></div>';
@@ -82,3 +82,5 @@ refreshNav();load();
 
 function togglePw(b){var i=b.parentNode.querySelector("input"),s=i.type==="password",t=s?"Ascunde parola":"Arată parola";
   i.type=s?"text":"password";b.classList.toggle("on",s);b.setAttribute("data-tip",t);b.setAttribute("aria-label",t)}
+(function(){if(location.hash==="#cere")show("req")})();
+(function(){if(location.hash==="#cere")show("req")})();
