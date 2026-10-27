@@ -12,14 +12,14 @@ function show(w){
   if(w==="login"&&isAdmin())w="list";
   if((w==="add"||w==="catalog"||w==="mine"||w==="stats"||w==="orders")&&!isAdmin())w="login";
   VIEWS.forEach(function(s){$(s).hidden=s!==w});
-  $("hero").hidden=w!=="list";
+  $("hero").hidden=w!=="list";var tr=document.querySelector(".trust2");if(tr)tr.hidden=w!=="list";
   $("home").hidden=!(w==="list"||w==="req");$("t-req").className=w==="req"?"on":"";$("t-list").className=w==="list"?"on":"";
   document.body.classList.remove("mo");
   var cb=$("cbar");if(cb&&HAVECB)cb.hidden=!(w==="list"||w==="req");
   window.scrollTo(0,0);
 }
 function refreshNav(){["m-add","m-cat","m-mine","m-stats","m-orders","m-out"].forEach(function(i){$(i).hidden=!isAdmin()});$("m-login").hidden=isAdmin()}
-function go(){$("q").value=$("hq").value;$("fc").value="";show("list");render();$("list").scrollIntoView()}
+function go(){$("q").value=$("hq").value;$("fc").value="";if(window.homeReset)homeReset();show("list");render();$("list").scrollIntoView()}
 function renderHero(){
   var tiles=[],
       ps=parts().filter(function(x){return !x.vandut&&x.poze&&x.poze[0]}).sort(function(a,b){return b._t-a._t});
@@ -67,15 +67,16 @@ async function load(){
   }catch(e){box.innerHTML='<div class="empty">Nu s-au putut încărca anunțurile. Verifică config.js și politicile din Supabase.</div>'}
 }
 function render(){
-  var q=$("q").value.toLowerCase(),c=$("fc").value,s=$("fs").value,box=$("items");
+  var q=$("q").value.toLowerCase(),c=$("fc").value,s=$("fs").value,box=$("items"),fb=($("fb").value||"").toLowerCase(),fm=($("fm").value||"").toLowerCase();
   var r=parts().filter(function(x){
     var txt=[x.titlu,x.oem,x.ref,x.marca,x.model,x.marcaPiesa,x.motor].join(" ").toLowerCase();
-    return (!q||txt.indexOf(q)>-1)&&(!c||x.cat===c)&&(!s||x.stare===s);
+    var mk=String(x.marca||"").toLowerCase(),md=String(x.model||"").toLowerCase();
+    return (!q||txt.indexOf(q)>-1)&&(!c||x.cat===c)&&(!s||x.stare===s)&&(!fb||mk===fb||(typeof catCanon==="function"&&catCanon(x.marca).toLowerCase()===fb))&&(!fm||(md&&(md.indexOf(fm)>-1||fm.indexOf(md)>-1)));
   });
   var so=$("so").value;
   r.sort(function(a,b){if(!!a.vandut!==!!b.vandut)return a.vandut?1:-1;var pa=parseFloat(a.pret)||0,pb=parseFloat(b.pret)||0;if(so==="pa")return pa-pb;if(so==="pd")return pb-pa;return b._t-a._t});
-  $("cnt").textContent="("+r.length+")";
-  if(!r.length){box.innerHTML='<div class="empty">'+(parts().length?"Niciun rezultat pentru filtrele alese.":"Nu există anunțuri încă.")+'</div>';return}
+  $("cnt").textContent="("+r.length+")";if(window.homeChips)homeChips();
+  if(!r.length){box.innerHTML='<div class="empty">'+(parts().length?"Niciun rezultat pentru filtrele alese.<br><button class=\"btn\" style=\"margin-top:16px\" onclick=\"show('req')\">Cere ofertă pentru piesa ta</button>":"Nu există anunțuri încă.")+'</div>';return}
   box.innerHTML=r.map(function(x){
     var tel=String(x.tel||"").replace(/[^\d+]/g,""),
         ani=x.anDe||x.anPana?(x.anDe||"?")+" - "+(x.anPana||"?"):"",

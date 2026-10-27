@@ -15,9 +15,9 @@ $("pics").addEventListener("change",function(e){
     c.toBlob(function(b){if(b&&kept.length+photos.length<4){photos.push(b);thumbs()}},"image/jpeg",.8)};im.onerror=function(){toast("Poza nu poate fi citită. Folosește JPG sau PNG.")};im.src=URL.createObjectURL(f)});
   e.target.value="";
 });
-function oemReq(){var sh=document.querySelector('[name=stare]').value==="Second hand";document.querySelector('[name=oem]').required=!sh;$("oemstar").textContent=sh?"(opțional)":"*"}
+function oemReq(){var sh=document.querySelector('[name=stare]').value==="Second hand";document.querySelector('[name=oem]').required=false;$("oemstar").textContent="(opțional)"}
 document.querySelector('[name=stare]').addEventListener("change",oemReq);oemReq();
-function resetForm(){editId="";kept=[];photos=[];$("f").reset();thumbs();$("addtitle").textContent="Publică o piesă";$("subbtn").textContent="Publică anunțul";oemReq()}
+function resetForm(){editId="";kept=[];photos=[];$("f").reset();$("more").open=false;thumbs();$("addtitle").textContent="Vinde o piesă";$("subbtn").textContent="Publică anunțul";oemReq()}
 function newAd(){resetForm();show("add")}
 function find(id){return data.filter(function(d){return d._id===id})[0]}
 function edit(id){
@@ -36,6 +36,8 @@ async function save(e){
   var form=e.target,fd=new FormData(form),o={},btn=$("subbtn"),lbl=btn.textContent;
   fd.forEach(function(v,k){o[k]=v});
   o.negociabil=!!fd.get("negociabil");o.factura=!!fd.get("factura");
+  o.vanzator=(o.vanzator||"").trim()||"Hikar Dezmembrări";o.tel=(o.tel||"").trim()||(typeof SITE_TEL!=="undefined"?SITE_TEL:"");o.loc=(o.loc||"").trim()||"Oradea, Bihor";
+  o.cat=o.cat||guessCat(o.titlu+" "+(o.desc||""));
   btn.disabled=true;btn.textContent="Se salvează...";
   try{
     var urls=kept.slice();for(var i=0;i<photos.length;i++)urls.push(await apiUpload(photos[i]));
@@ -48,6 +50,23 @@ async function save(e){
     var was=editId;resetForm();await load();show("list");toast(was?"Modificări salvate":"Anunț publicat")
   }catch(err){toast(isAdmin()?"Nu s-a putut salva ("+err.message+")":"Sesiune expirată, intră din nou");if(!isAdmin()){refreshNav();show("login")}}
   btn.disabled=false;btn.textContent=editId?"Salvează modificările":"Publică anunțul";
+}
+/* alege singura categoria dupa cuvintele din titlu */
+function guessCat(t){
+  t=String(t).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+  var m=[["Caroserie / faruri","far |faruri|bara|capota|aripa|usa|portiera|oglinda|grila|haion|stop|proiector|lampa"],
+   ["Frânare","frana|frane|disc|placute|etrier|abs|servofrana"],
+   ["Suspensie / direcție","amortizor|brat|bieleta|telescop|directie|cremaliera|arc |fuzeta|punte|rulment|planetara|bascula"],
+   ["Cutie de viteze / transmisie","cutie|ambreiaj|transmisie|diferential|volanta|cardan"],
+   ["Evacuare","evacuare|catalizator|toba|fap|egr|esapament|galerie"],
+   ["Răcire / climatizare","radiator|clima|compresor|ventilator|racire|intercooler|termostat|bord ac|incalzire"],
+   ["Electrice / electronice","calculator|ecu|senzor|alternator|electromotor|bobina|bujie|modul|sofer|butuc|camera|display|ceas|panou|bord|airbag|motoras|macara|releu|cablaj"],
+   ["Interior","scaun|volan|plafon|consola|manson|centura|covoras|capac|garnitura int|mocheta|bancheta|oglinda int"],
+   ["Roți / jante / anvelope","janta|jante|roata|anvelopa|capac roata"],
+   ["Filtre / consumabile","filtru|ulei|lichid|consumabil"],
+   ["Motor","motor|injector|turbo|pompa|chiulasa|piston|bloc|carter|distributie|rampa|vibrochen|galerie adm|clapeta|baie ulei|alternator"]];
+  for(var i=0;i<m.length;i++)if(new RegExp("(^|[^a-z])("+m[i][1]+")").test(t+" "))return m[i][0];
+  return "Alte piese";
 }
 function clean(x){var o=Object.assign({},x);delete o._id;delete o._d;return o}
 async function toggleSold(id){
