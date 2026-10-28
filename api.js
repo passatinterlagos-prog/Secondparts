@@ -46,13 +46,26 @@ async function apiLogin(email,pass,rem){
   try{localStorage.setItem("sp_rem",REM?"1":"0");["sp_token","sp_refresh"].forEach(function(k){localStorage.removeItem(k);sessionStorage.removeItem(k)})}catch(e){}
   setSession(await r.json());
 }
-function apiLogout(){TOKEN=null;REFRESH=null;try{["sp_token","sp_refresh"].forEach(function(k){localStorage.removeItem(k);sessionStorage.removeItem(k)})}catch(e){}}
+function apiLogout(){TOKEN=null;REFRESH=null;try{["sp_token","sp_refresh"].forEach(function(k){localStorage.removeItem(k);sessionStorage.removeItem(k)})}catch(e){}
+  try{if(typeof refreshNav==="function")refreshNav()}catch(e){}}
 async function apiList(){
-  var u=SUPABASE_URL+"/rest/v1/piese?select=id,created_at,data&order=created_at.desc&limit=200";
+  var u=SUPABASE_URL+"/rest/v1/piese?select=id,created_at,data&order=created_at.desc&limit=1000";
   var r=await sb(u);
   if(r.status===401&&!TOKEN)r=await sb(u); /* token invalid: reincearca ca vizitator */
   if(!r.ok)throw new Error(r.status);
   return r.json();
+}
+/* un singur anunt dupa id (pagina anunt.html nu mai incarca toata lista) */
+async function apiGet(id){
+  var r=await sb(SUPABASE_URL+"/rest/v1/piese?select=id,created_at,data&id=eq."+encodeURIComponent(id));
+  await chk(r);var j=await r.json();return j[0]||null;
+}
+/* anunturi similare: aceeasi categorie, apoi aceeasi marca daca sunt prea putine */
+async function apiSimilar(cat,marca){
+  var b=SUPABASE_URL+"/rest/v1/piese?select=id,created_at,data&order=created_at.desc&limit=30&data-%3E%3E",out=[];
+  if(cat){var r=await sb(b+"cat=eq."+encodeURIComponent(cat));if(r.ok)out=await r.json()}
+  if(out.length<8&&marca){var r2=await sb(b+"marca=eq."+encodeURIComponent(marca));if(r2.ok)out=out.concat(await r2.json())}
+  return out;
 }
 async function apiInsert(o){await chk(await sb(SUPABASE_URL+"/rest/v1/piese",{method:"POST",body:JSON.stringify({data:o})},mini))}
 async function apiPatch(id,o){await chk(await sb(SUPABASE_URL+"/rest/v1/piese?id=eq."+encodeURIComponent(id),{method:"PATCH",body:JSON.stringify({data:o})},mini))}

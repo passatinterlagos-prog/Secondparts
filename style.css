@@ -436,8 +436,6 @@ main.w.pad{padding-left:20px;padding-right:20px}
 .dr button.on{background:#faf5e6;color:var(--gold2);font-weight:700}
 .dr .x{min-height:0;width:auto;align-self:flex-end;padding:6px 4px 14px;margin:0;font-size:.85rem;background:none}
 .dr .x:hover{background:none}
-.dr .mp{text-align:center;font-weight:700;color:#2a1d05;border:1px solid #9a7220;background:linear-gradient(180deg,#f8e6ae 0%,#dcb862 48%,#b88a2c 100%);box-shadow:0 3px 0 #8a6414}
-.dr .mp:hover{background:linear-gradient(180deg,#f8e6ae 0%,#dcb862 48%,#b88a2c 100%);color:#2a1d05;filter:brightness(1.06)}
 
 /* ---- anunt: buton Contact jos ---- */
 .csh{display:none}
@@ -452,3 +450,30 @@ main.w.pad{padding-left:20px;padding-right:20px}
  .csp .wa span{color:#2a1d05;opacity:.8}
  .ct2 a{display:none!important}
 }
+
+/* ---- butoane admin cu iconite ---- */
+.row.adm button,.mr .a button,.od .a button{display:inline-flex;align-items:center;justify-content:center;gap:7px}
+.row.adm button svg,.mr .a button svg,.od .a button svg{flex:none}
+.row.adm button.dl:hover,.mr .a button.dl:hover,.od .a button.dl:hover{border-color:var(--red);color:var(--red)}
+
+/* ---- bara de jos pe telefon: Contacte + Locatie, simetrice ---- */
+@media(max-width:760px){
+ .cbar .cc2{flex:1 1 0;min-width:0;display:flex;align-items:center;justify-content:center;height:50px;padding:0 8px;border-radius:999px;border:1px solid #dccfaa;background:linear-gradient(180deg,#fff,#f3eee0);color:var(--ink);text-decoration:none;font:600 1rem Inter,"Segoe UI",Roboto,Arial,sans-serif;cursor:pointer;box-shadow:0 3px 0 #d6c9a2}
+ .cbar .cc2.pri{background:linear-gradient(180deg,#f8e6ae 0%,#dcb862 48%,#b88a2c 100%);border-color:#9a7220;color:#2a1d05;box-shadow:0 3px 0 #8a6414}
+ .cbar .cc2:active{transform:translateY(2px)}
+ .csh .csp{bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+ body:has(.cbar:not([hidden])){padding-bottom:84px}
+}
+
+.csb{cursor:pointer;-webkit-tap-highlight-color:transparent}
+
+/* buton secundar: publica si adauga alta */
+.btn.ghost{background:#fff;color:#8a6a1f;border:1px solid #8a6a1f;margin-left:10px;letter-spacing:0;text-transform:none}
+@media(max-width:640px){.btn.ghost{margin:10px 0 0;width:100%}}
+
+/* reducere: eticheta pe poza (stanga sus) si pret vechi taiat */
+.ph,.gal{position:relative}
+.dsc{position:absolute;top:10px;left:10px;z-index:3;background:#c62828;color:#fff;font:800 .85rem Inter,sans-serif;padding:5px 11px;border-radius:999px;box-shadow:0 2px 6px rgba(0,0,0,.25);pointer-events:none}
+.dsc.tr{left:auto;right:8px;top:8px;font-size:.75rem;padding:4px 9px}
+s.old{color:var(--mute);font-weight:500;font-size:.8em;margin-left:6px}
+#mq{width:100%;margin:0 0 14px;padding:13px 18px;border:1px solid var(--line);border-radius:999px;font:inherit;background:#fff}

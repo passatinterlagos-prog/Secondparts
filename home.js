@@ -111,6 +111,7 @@ function dzMode(on){
   box.hidden=!on;
   PG.add=on?["Adaugă la dezmembrat","Alege marca, modelul și anul (ex: VW Passat 2016), apoi scrie ce piese vinzi: uși, capotă, faruri, motor etc."]:PG_ADD0;
   if(!$("add").hidden)pageBanner("add");
+  if(typeof agBtn==="function")agBtn();
 }
 (function(){
   var n=window.newAd,e=window.edit;

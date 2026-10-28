@@ -20,3 +20,7 @@ var SITE_AUT="Autorizație RAR nr. 26875 (BH1159) · Autorizație de mediu nr. 8
 var REVIEWS=[
   /* {nume:"Andrei, Cluj", piesa:"Far Golf 7", text:"Piesa exact ca in poze, livrare rapida."} */
 ];
+
+/* Distribuire pe Facebook cu poza si titlul anuntului. Gol = linkul simplu al paginii (Facebook nu arata poza).
+   Cloudflare Pages: "/share"   Netlify: "/.netlify/functions/share"   (vezi folderul facebook-share) */
+var SITE_SHARE="";

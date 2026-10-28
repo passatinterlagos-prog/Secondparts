@@ -9,7 +9,7 @@ function carHTML(p,alt,big){
 (function(){
   var tip=document.createElement("div"),t,lp=0,lpEl=null,moved=false,d=null;
   tip.id="tip";document.body.appendChild(tip);
-  var T={"Detalii":"Deschide pagina completă a anunțului","Sună":"Sună vânzătorul","WhatsApp":"Scrie vânzătorului pe WhatsApp","Copiază link":"Copiază linkul anunțului","Editează":"Modifică anunțul","Marchează vândut":"Marchează piesa ca vândută","Vândut":"Marchează piesa ca vândută","Redeschide":"Pune anunțul din nou la vânzare","Șterge":"Șterge definitiv","Închide ✕":"Închide meniul","×":"Scoate poza","Meniu":"Deschide meniul","Caută":"Caută piesele","Marchează procesată":"Comanda a fost rezolvată","Trimite comanda":"Trimite comanda vânzătorului"};
+  var T={"Detalii":"Deschide pagina completă a anunțului","Sună":"Sună vânzătorul","WhatsApp":"Scrie vânzătorului pe WhatsApp","Copiază link":"Copiază linkul anunțului","Editează":"Modifică anunțul","Copiază":"Folosește anunțul ca model pentru unul nou","Marchează vândut":"Marchează piesa ca vândută","Vândut":"Marchează piesa ca vândută","Redeschide":"Pune anunțul din nou la vânzare","Șterge":"Șterge definitiv","Închide ✕":"Închide meniul","×":"Scoate poza","Meniu":"Deschide meniul","Caută":"Caută piesele","Marchează procesată":"Comanda a fost rezolvată","Trimite comanda":"Trimite comanda vânzătorului"};
   function label(){document.querySelectorAll("button,a,span.cn").forEach(function(el){
     if(el.hasAttribute("data-tip"))return;var k=el.textContent.trim()||el.getAttribute("aria-label")||"";if(T[k])el.setAttribute("data-tip",T[k])})}
   var q=0;new MutationObserver(function(){if(!q)q=requestAnimationFrame(function(){q=0;label()})}).observe(document.body,{childList:true,subtree:true});label();

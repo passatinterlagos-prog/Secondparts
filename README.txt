@@ -5,6 +5,8 @@ HIKAR (SC HICAR DEZMEMBRARI SRL) - toate fisierele intr-un singur folder
   api.js         comunicarea cu Supabase (date, login, poze)
   ui.js          lista, filtre, sortare, navigare
   gal.js         poze derulabile + explicatii la pictograme
+  home.js        prima pagina: selector marca/model/piesa, filtre, buton Inapoi, mod dezmembrare
+  catalog.js     lista interna de marci/modele/ani (completare automata in formulare)
   admin.js       login, publicare, editare, vandut, stergere, comenzi
   anunt.html/.js pagina unui anunt (galerie, comanda, similare)
   setup.sql      reguli de securitate + bucket poze (se ruleaza in Supabase)

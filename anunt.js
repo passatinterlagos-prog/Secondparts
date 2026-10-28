@@ -5,16 +5,27 @@ var tt;function toast(t){var m=$("msg");m.textContent=t;m.style.display="block";
 var CAR="Mașini la dezmembrat";
 function pz(x){var p=parseFloat(x.pret);return(!(p>0)&&x.cat===CAR)?"Mașină la dezmembrat":esc(x.pret)+" "+esc(x.moneda)}
 var ALL=[],cur=null,id=new URLSearchParams(location.search).get("id");
+function disc(x){var o=parseFloat(x.pretVechi),p=parseFloat(x.pret);return(o>p&&p>0)?Math.round((1-p/o)*100):0}
+function badge(x){var d=x.vandut?0:disc(x);return d?'<span class="dsc">-'+d+'%</span>':""}
+function oldP(x){return disc(x)?' <s class="old">'+esc(x.pretVechi)+" "+esc(x.moneda)+"</s>":""}
+function hasP(x){return parseFloat(x.pret)>0}
 function sp(k,v){return v?'<tr><td>'+k+'</td><td>'+esc(v)+'</td></tr>':''}
 function pick(i){var s=document.querySelector(".big .cs");if(s)s.scrollTo({left:i*s.clientWidth,behavior:"smooth"})}
 function share(){var u=location.href;if(navigator.clipboard)navigator.clipboard.writeText(u).then(function(){toast("Link copiat")}).catch(function(){prompt("Copiază linkul:",u)});else prompt("Copiază linkul:",u)}
+function mapRow(w){var o=w.data;o._id=w.id;o._d=new Date(w.created_at).toLocaleDateString("ro-RO");return o}
 async function init(){
-  var box=$("ad");
+  var box=$("ad"),nf='<div class="empty">Anunțul nu a fost găsit sau a fost șters.</div>';
+  if(!/^[0-9a-f-]{36}$/i.test(id||"")){box.innerHTML=nf;return}
   try{
-    var all=(await apiList()).map(function(w){var o=w.data;o._id=w.id;o._d=new Date(w.created_at).toLocaleDateString("ro-RO");return o});
-    ALL=all;cur=all.filter(function(x){return x._id===id})[0];
-    if(!cur){box.innerHTML='<div class="empty">Anunțul nu a fost găsit sau a fost șters.</div>';return}
-    document.title=cur.titlu+" | Hikar";draw(cur);similar(all);track("vedere",cur._id,cur.titlu);
+    var w=await apiGet(id);
+    if(!w||(w.data&&w.data.tip)){box.innerHTML=nf;return}
+    cur=mapRow(w);ALL=[cur];
+    document.title=cur.titlu+" | Hikar";draw(cur);track("vedere",cur._id,cur.titlu);
+    try{
+      var seen={};seen[cur._id]=1;
+      var rows=(await apiSimilar(cur.cat,cur.marca)).filter(function(r){if(seen[r.id])return false;seen[r.id]=1;return true}).map(mapRow);
+      similar(rows);
+    }catch(e){}
   }catch(e){box.innerHTML='<div class="empty">Nu s-a putut încărca anunțul.</div>'}
 }
 function draw(x){
@@ -30,10 +41,10 @@ function draw(x){
     +'<label class="wide">Mesaj<textarea name="mesaj" placeholder="Întrebări, seria șasiului pentru verificarea compatibilității..."></textarea></label>'
     +'<label class="chk wide"><input type="checkbox" required> Sunt de acord ca datele mele să fie folosite pentru a răspunde acestei comenzi.</label>'
     +'</div><p class="note2">Comanda nu e o plată online. Vânzătorul te contactează pentru confirmare, preț final și livrare.</p></fieldset><button class="btn" id="ob" type="submit">Trimite comanda</button></form>';
-  $("ad").innerHTML='<div class="dg"><div class="gal">'+gal+'</div><div class="inf">'
+  $("ad").innerHTML='<div class="dg"><div class="gal">'+gal+badge(x)+'</div><div class="inf">'
     +'<div><span class="tag'+""+'">'+esc(x.stare)+'</span><span class="meta">'+esc(x.cat)+'</span></div>'
     +'<h1>'+esc(x.titlu)+'</h1>'+(x.oem?'<span class="oem">'+esc(x.oem)+'</span>':"")
-    +'<div class="price">'+pz(x)+(x.negociabil?' <span class="meta">negociabil</span>':"")+'</div>'
+    +'<div class="price">'+pz(x)+oldP(x)+(x.negociabil?' <span class="meta">negociabil</span>':"")+'</div>'
     +'<table class="sp">'+sp("Compatibil",x.marca+" "+x.model)+sp("Ani",ani)+sp("Motorizare",x.motor)+sp("Combustibil",x.comb)+sp("Marca piesei",x.marcaPiesa)+sp("Cod alternativ",x.ref)
     +sp("Cantitate",x.cant>1?x.cant+" buc.":"")+sp("Garanție",x.garantie)+sp("Livrare",x.livrare)+sp("Factură",x.factura?"Da":"")+sp("Vânzător",x.vanzator+", "+x.loc)+sp("Publicat",x._d)+'</table>'
     +(x.desc?'<div style="white-space:pre-wrap">'+esc(x.desc)+'</div>':"")
@@ -41,19 +52,19 @@ function draw(x){
     +(x.vandut?'':'<div class="vinb"><b>Verifică dacă se potrivește mașinii tale</b><div class="vr"><input id="vin" maxlength="17" placeholder="Serie șasiu (VIN), 17 caractere" autocapitalize="characters" autocomplete="off"><button type="button" class="btn" onclick="vinCheck()">Verifică pe WhatsApp</button></div><span class="meta">Primești confirmarea compatibilității înainte de livrare.</span></div>')
     +'<div class="ct'+(x.vandut?'':' ct2')+'"><a class="call" href="tel:'+esc(tel)+'">Sună</a><a class="wa" href="'+esc(wa)+'" target="_blank" rel="noopener">WhatsApp</a><button onclick="share()">Copiază link</button><button onclick="shareAd()">Distribuie</button>'+(isAdmin()?'<button onclick="copyText()">Text pentru Marketplace</button>':"")+'</div>'
     +'</div>'
-    +(x.vandut?'':'<div class="pro"><div><b>✓</b>Îți confirmăm compatibilitatea pe baza seriei șasiului</div><div><b>✓</b>Livrare prin curier în toată țara</div><div><b>✓</b>Răspundem rapid pe WhatsApp și telefon</div></div>')
+    +(x.vandut?'':'<div class="pro"><div><b>✓</b>Îți confirmăm compatibilitatea pe baza seriei șasiului</div>'+(/curier/i.test(x.livrare||"curier")?'<div><b>✓</b>Livrare prin curier în toată țara</div>':'')+'<div><b>✓</b>Răspundem rapid pe WhatsApp și telefon</div></div>')
     +'</div></div>'+ord
-    +(x.vandut?'':'<div class="sb"><div class="price">'+pz(x)+'</div><button type="button" class="cbtn" id="cbt" aria-expanded="false" aria-controls="csh" onclick="ctog()">Contact</button></div><div id="csh" class="csh" hidden><div class="csb" onclick="ctog()"></div><div class="csp"><a class="call c2" href="tel:'+esc(tel)+'">Sună<span>'+esc(x.tel||tel)+'</span></a><a class="wa c2" href="'+esc(wa)+'" target="_blank" rel="noopener">WhatsApp<span>Scrie-ne un mesaj</span></a></div></div>');seo(x);
+    +(x.vandut?'':'<div class="sb"><div class="price">'+pz(x)+oldP(x)+'</div><button type="button" class="cbtn" id="cbt" aria-expanded="false" aria-controls="csh" onclick="ctog()">Contact</button></div><div id="csh" class="csh" hidden><div class="csb" onclick="ctog()"></div><div class="csp"><a class="call c2" href="tel:'+esc(tel)+'">Sună<span>'+esc(x.tel||tel)+'</span></a><a class="wa c2" href="'+esc(wa)+'" target="_blank" rel="noopener">WhatsApp<span>Scrie-ne un mesaj</span></a></div></div>');seo(x);
 }
 function ctog(){var s=$("csh"),b=$("cbt");if(!s)return;var o=s.hidden;s.hidden=!o;b.setAttribute("aria-expanded",o);b.textContent=o?"Închide":"Contact"}
 document.addEventListener("keydown",function(e){var s=$("csh");if(e.key==="Escape"&&s&&!s.hidden)ctog()});
 function shareAd(){
-  var u=location.href,t=cur.titlu+" - "+cur.pret+" "+cur.moneda;
+  var u=(typeof SITE_SHARE!=="undefined"&&SITE_SHARE)?location.origin+SITE_SHARE+"?id="+encodeURIComponent(cur._id):location.href,t=cur.titlu+(hasP(cur)?" - "+cur.pret+" "+cur.moneda:"");
   if(navigator.share){navigator.share({title:t,text:t,url:u}).catch(function(){});return}
   window.open("https://www.facebook.com/sharer/sharer.php?u="+encodeURIComponent(u),"_blank","noopener");
 }
 function copyText(){
-  var x=cur,t=x.titlu+"\nPreț: "+x.pret+" "+x.moneda+(x.negociabil?" (negociabil)":"")+"\nStare: Second hand\n"
+  var x=cur,t=x.titlu+(hasP(x)?"\nPreț: "+x.pret+" "+x.moneda+(x.negociabil?" (negociabil)":""):"")+"\nStare: Second hand\n"
    +(x.oem?"Cod piesă: "+x.oem+"\n":"")+"Compatibil: "+(x.marca||"")+" "+(x.model||"")+((x.anDe||x.anPana)?" ("+(x.anDe||"?")+" - "+(x.anPana||"?")+")":"")+(x.motor?", "+x.motor:"")+"\n"
    +(x.desc?"\n"+x.desc+"\n":"")+"\nLivrare: "+(x.livrare||"")+" | Garanție: "+(x.garantie||"")+"\nTelefon: "+(x.tel||"")+" | "+(x.loc||"")+"\n"+location.href;
   if(navigator.clipboard)navigator.clipboard.writeText(t).then(function(){toast("Text copiat, lipește-l în Facebook / Marketplace")}).catch(function(){prompt("Copiază textul:",t)});else prompt("Copiază textul:",t);
@@ -77,16 +88,16 @@ function similar(all){
   var r=all.filter(function(x){return x._id!==cur._id&&!x.tip&&!x.vandut&&(x.cat===cur.cat||x.marca===cur.marca)}).slice(0,4);
   if(!r.length)return;
   $("simw").innerHTML='<div class="sh"><h2>Anunțuri similare</h2></div><div class="list">'+r.map(function(x){
-    return '<article class="item"><a class="ph" href="anunt.html?id='+esc(x._id)+'">'+(x.poze&&x.poze[0]?carHTML(x.poze,'',false):"Fără poză")+'</a><div class="b"><h3><a href="anunt.html?id='+esc(x._id)+'">'+esc(x.titlu)+'</a></h3><div class="price">'+esc(x.pret)+" "+esc(x.moneda)+'</div></div></article>';
+    return '<article class="item"><a class="ph" href="anunt.html?id='+esc(x._id)+'">'+(x.poze&&x.poze[0]?carHTML(x.poze,'',false):"Fără poză")+badge(x)+'</a><div class="b"><h3><a href="anunt.html?id='+esc(x._id)+'">'+esc(x.titlu)+'</a></h3><div class="price">'+pz(x)+oldP(x)+'</div></div></article>';
   }).join("")+'</div>';
 }
 init();
 
-/* SEO: descriere si date structurate pentru Google */
+/* SEO: descriere si date structurate pentru Google (fara oferta daca piesa nu are pret) */
 function seo(x){try{
   var m=document.querySelector("meta[name=description]");if(!m){m=document.createElement("meta");m.name="description";document.head.appendChild(m)}
-  m.content=(x.titlu+" - "+x.pret+" "+x.moneda+(x.oem?", cod "+x.oem:"")+". Compatibil "+(x.marca||"")+" "+(x.model||"")).slice(0,155);
-  var s=document.createElement("script");s.type="application/ld+json";
-  s.textContent=JSON.stringify({"@context":"https://schema.org","@type":"Product",name:x.titlu,image:x.poze||[],sku:x.oem||undefined,description:x.desc||x.titlu,
-    offers:{"@type":"Offer",price:x.pret,priceCurrency:x.moneda,availability:x.vandut?"https://schema.org/SoldOut":"https://schema.org/InStock",itemCondition:"https://schema.org/UsedCondition"}});
+  m.content=(x.titlu+(hasP(x)?" - "+x.pret+" "+x.moneda:"")+(x.oem?", cod "+x.oem:"")+". Compatibil "+(x.marca||"")+" "+(x.model||"")).slice(0,155);
+  var j={"@context":"https://schema.org","@type":"Product",name:x.titlu,image:x.poze||[],sku:x.oem||undefined,description:x.desc||x.titlu};
+  if(hasP(x))j.offers={"@type":"Offer",price:x.pret,priceCurrency:x.moneda,availability:x.vandut?"https://schema.org/SoldOut":"https://schema.org/InStock",itemCondition:"https://schema.org/UsedCondition"};
+  var s=document.createElement("script");s.type="application/ld+json";s.textContent=JSON.stringify(j);
   document.head.appendChild(s)}catch(e){}}
